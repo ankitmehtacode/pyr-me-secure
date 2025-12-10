@@ -29,7 +29,7 @@ const ProcessSection = () => {
   ];
 
   return (
-    <section className="py-20 md:py-28 bg-muted/50">
+    <section className="py-20 md:py-28 trust-gradient">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
@@ -51,19 +51,19 @@ const ProcessSection = () => {
               <div key={step.title} className="relative">
                 {/* Connector Line (Desktop) */}
                 {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-10 left-[60%] w-full h-0.5 bg-border">
-                    <div className="absolute right-0 w-2 h-2 rounded-full bg-primary -translate-y-[3px]" />
+                  <div className="hidden lg:block absolute top-12 left-[60%] w-full h-0.5 bg-border">
+                    <div className="absolute right-0 w-2 h-2 rounded-full bg-primary -translate-y-[3px] glow-primary" />
                   </div>
                 )}
 
-                <div className="relative p-6 bg-card rounded-xl border border-border shadow-sm text-center group hover:shadow-md transition-shadow">
+                <div className="relative neo-card p-6 text-center group card-hover">
                   {/* Step Number */}
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-3 py-1 bg-primary text-primary-foreground text-xs font-bold rounded-full">
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-primary text-primary-foreground text-xs font-bold rounded-full glow-primary">
                     {step.step}
                   </div>
 
                   {/* Icon */}
-                  <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-5 mt-2 group-hover:bg-primary/20 transition-colors">
+                  <div className="w-16 h-16 mx-auto rounded-full neo-card-inset flex items-center justify-center mb-5 mt-4 group-hover:glow-primary transition-all duration-300">
                     <step.icon className="w-8 h-8 text-primary" />
                   </div>
 

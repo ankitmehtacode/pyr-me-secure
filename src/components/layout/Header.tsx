@@ -21,9 +21,9 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center shadow-sm group-hover:shadow-glow transition-shadow duration-300">
-              <Shield className="w-5 h-5 text-primary-foreground" />
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 rounded-xl neo-card flex items-center justify-center group-hover:glow-primary transition-all duration-300">
+              <Shield className="w-5 h-5 text-primary" />
             </div>
             <div className="flex flex-col">
               <span className="text-lg font-bold text-foreground tracking-tight">PYRME</span>
@@ -38,10 +38,10 @@ const Header = () => {
                 key={link.href}
                 to={link.href}
                 className={cn(
-                  "px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200",
+                  "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                   isActive(link.href)
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    ? "neo-card-inset text-primary"
+                    : "text-muted-foreground hover:text-foreground hover:neo-card"
                 )}
               >
                 {link.label}
@@ -50,12 +50,12 @@ const Header = () => {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-4">
             <a href="tel:1800-000-0000" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
               <Phone className="w-4 h-4" />
               <span>1800-000-0000</span>
             </a>
-            <Button asChild>
+            <Button asChild className="neo-button text-foreground hover:text-foreground">
               <Link to="/login">Login</Link>
             </Button>
           </div>
@@ -63,7 +63,7 @@ const Header = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-md hover:bg-muted transition-colors"
+            className="md:hidden p-2 rounded-lg neo-card transition-all"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -80,17 +80,17 @@ const Header = () => {
                   to={link.href}
                   onClick={() => setIsMenuOpen(false)}
                   className={cn(
-                    "px-4 py-3 rounded-md text-sm font-medium transition-colors",
+                    "px-4 py-3 rounded-lg text-sm font-medium transition-all",
                     isActive(link.href)
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                      ? "neo-card-inset text-primary"
+                      : "text-muted-foreground hover:text-foreground"
                   )}
                 >
                   {link.label}
                 </Link>
               ))}
               <hr className="my-2 border-border" />
-              <Button asChild className="mx-4">
+              <Button asChild className="mx-4 neo-button text-foreground hover:text-foreground">
                 <Link to="/login" onClick={() => setIsMenuOpen(false)}>
                   Login
                 </Link>

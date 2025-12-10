@@ -56,17 +56,17 @@ const ServicesSection = () => {
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {services.map((service, index) => (
+          {services.map((service) => (
             <div
               key={service.title}
-              className="group relative p-6 bg-card rounded-xl border border-border shadow-sm card-hover overflow-hidden"
+              className="group neo-card p-6 card-hover overflow-hidden relative"
             >
-              {/* Background Decoration */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-500" />
+              {/* Glow Effect on Hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
               <div className="relative">
                 {/* Icon */}
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
+                <div className="w-14 h-14 rounded-xl neo-card-inset flex items-center justify-center mb-5 group-hover:glow-primary transition-all duration-300">
                   <service.icon className="w-7 h-7 text-primary" />
                 </div>
 
@@ -89,7 +89,7 @@ const ServicesSection = () => {
                 </div>
 
                 {/* CTA */}
-                <Button asChild variant="ghost" className="p-0 h-auto font-medium text-primary hover:text-primary/80 group/btn">
+                <Button asChild variant="ghost" className="p-0 h-auto font-medium text-primary hover:text-trust group/btn">
                   <Link to={service.href} className="flex items-center gap-2">
                     Apply Now
                     <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
