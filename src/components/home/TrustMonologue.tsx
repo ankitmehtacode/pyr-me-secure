@@ -36,7 +36,7 @@ const TrustMonologue = () => {
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-medium text-foreground leading-tight mb-8">
               Why Trust Us?
             </h2>
-            <div className="max-w-2xl mx-auto">
+            <div className="max-w-2xl mx-auto neo-card-inset p-8 rounded-2xl">
               <p className="font-display text-lg md:text-xl text-muted-foreground leading-relaxed italic">
                 "In an age of digital noise, we engineer silence. Your data is transient, 
                 processed in volatile memory, and cryptographically shredded post-session. 
@@ -50,11 +50,11 @@ const TrustMonologue = () => {
             {securityFeatures.map((feature, index) => (
               <div
                 key={feature.title}
-                className="group p-6 bg-card rounded-xl border border-border shadow-sm card-hover"
+                className="group neo-card p-6 card-hover"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                  <div className="w-12 h-12 rounded-xl neo-card-inset flex items-center justify-center shrink-0 group-hover:glow-primary transition-all duration-300">
                     <feature.icon className="w-6 h-6 text-primary" />
                   </div>
                   <div>

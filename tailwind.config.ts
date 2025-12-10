@@ -76,8 +76,11 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        'glow': '0 0 20px hsla(209, 100%, 28%, 0.15)',
-        'card': '0 4px 6px -1px hsla(222, 47%, 11%, 0.1), 0 2px 4px -2px hsla(222, 47%, 11%, 0.1)',
+        'neo': '8px 8px 16px hsl(220 15% 5%), -8px -8px 16px hsl(220 15% 18% / 0.05)',
+        'neo-sm': '4px 4px 8px hsl(220 15% 5%), -4px -4px 8px hsl(220 15% 18% / 0.05)',
+        'neo-inset': 'inset 4px 4px 8px hsl(220 15% 5%), inset -4px -4px 8px hsl(220 15% 18% / 0.05)',
+        'glow': '0 0 30px hsla(209, 100%, 50%, 0.3)',
+        'glow-trust': '0 0 30px hsla(38, 85%, 55%, 0.3)',
       },
       keyframes: {
         "accordion-down": {
@@ -96,12 +99,17 @@ export default {
           from: { opacity: "0", transform: "translateY(20px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
+        "glow-pulse": {
+          "0%, 100%": { boxShadow: "0 0 20px hsla(209, 100%, 50%, 0.2)" },
+          "50%": { boxShadow: "0 0 40px hsla(209, 100%, 50%, 0.4)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.6s ease-out forwards",
         "slide-up": "slide-up 0.6s ease-out forwards",
+        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
       },
     },
   },
