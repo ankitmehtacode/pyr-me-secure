@@ -1,12 +1,24 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { FileText, Search, CheckCircle, CreditCard, Clock, AlertCircle } from "lucide-react";
+import { FileText, Search, CheckCircle, CreditCard, Clock, AlertCircle, User, Building2, TrendingUp } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Dashboard = () => {
+  const { user, isLoading, isAdmin } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      navigate("/auth");
+    }
+  }, [user, isLoading, navigate]);
+
   // Mock application data
   const application = {
     id: "PYR-12345678",
@@ -84,10 +96,18 @@ const Dashboard = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-pulse text-muted-foreground">Loading...</div>
+      </div>
+    );
+  }
+
   return (
     <>
       <Helmet>
-        <title>Track Application - PYRME Consulting</title>
+        <title>Dashboard - PYRME Consulting</title>
         <meta name="description" content="Track your loan application status in real-time with PYRME Consulting." />
       </Helmet>
 
@@ -96,27 +116,78 @@ const Dashboard = () => {
 
         <main className="flex-1">
           {/* Page Header */}
-          <section className="bg-primary py-12 md:py-16">
+          <section className="hero-gradient py-12 md:py-16">
             <div className="container mx-auto px-4">
-              <h1 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
-                Track Your Application
-              </h1>
-              <p className="text-primary-foreground/80 text-lg">
-                Monitor your loan application status in real-time
-              </p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
+                    Welcome back, {user?.email?.split("@")[0]}
+                  </h1>
+                  <p className="text-muted-foreground text-lg">
+                    Monitor your loan applications and manage your profile
+                  </p>
+                </div>
+                {isAdmin && (
+                  <Button 
+                    onClick={() => navigate("/admin")}
+                    className="neo-button border-0 bg-trust text-trust-foreground hover:bg-trust/90"
+                  >
+                    <Building2 className="w-4 h-4 mr-2" />
+                    Admin Panel
+                  </Button>
+                )}
+              </div>
             </div>
           </section>
 
-          {/* Search Section */}
+          {/* Quick Stats */}
           <section className="py-8 border-b border-border">
             <div className="container mx-auto px-4">
-              <div className="max-w-md mx-auto flex gap-3">
-                <Input
-                  placeholder="Enter Application ID (e.g., PYR-12345678)"
-                  className="input-secure"
-                  defaultValue={application.id}
-                />
-                <Button>Track</Button>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="neo-card p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl neo-card-inset flex items-center justify-center">
+                      <FileText className="w-6 h-6 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Applications</p>
+                      <p className="text-2xl font-bold text-foreground">1</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="neo-card p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl neo-card-inset flex items-center justify-center">
+                      <Clock className="w-6 h-6 text-trust" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Pending</p>
+                      <p className="text-2xl font-bold text-foreground">1</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="neo-card p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl neo-card-inset flex items-center justify-center">
+                      <CheckCircle className="w-6 h-6 text-success" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Approved</p>
+                      <p className="text-2xl font-bold text-foreground">0</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="neo-card p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl neo-card-inset flex items-center justify-center">
+                      <TrendingUp className="w-6 h-6 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Total Amount</p>
+                      <p className="text-2xl font-bold text-foreground">₹5L</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -126,7 +197,7 @@ const Dashboard = () => {
             <div className="container mx-auto px-4">
               <div className="max-w-3xl mx-auto">
                 {/* Application Card */}
-                <div className="bg-card rounded-xl border border-border shadow-sm p-6 mb-8">
+                <div className="neo-card p-6 mb-8">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 pb-6 border-b border-border">
                     <div>
                       <span className="text-xs text-muted-foreground uppercase tracking-wider">Application ID</span>
@@ -162,7 +233,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Timeline */}
-                <div className="bg-card rounded-xl border border-border shadow-sm p-6">
+                <div className="neo-card p-6">
                   <h2 className="text-lg font-semibold text-foreground mb-8">Application Progress</h2>
 
                   <div className="relative">
@@ -211,12 +282,12 @@ const Dashboard = () => {
                 </div>
 
                 {/* Help Card */}
-                <div className="mt-8 p-6 bg-muted/50 rounded-xl border border-border text-center">
+                <div className="mt-8 neo-card-inset p-6 rounded-xl text-center">
                   <h3 className="font-medium text-foreground mb-2">Need Help?</h3>
                   <p className="text-sm text-muted-foreground mb-4">
                     Our support team is available 24/7 to assist you with your application.
                   </p>
-                  <Button variant="outline">Contact Support</Button>
+                  <Button variant="outline" className="neo-button border-0">Contact Support</Button>
                 </div>
               </div>
             </div>
