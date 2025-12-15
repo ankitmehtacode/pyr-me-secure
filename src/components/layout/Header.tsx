@@ -1,12 +1,22 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Shield, Menu, X, Phone } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Shield, Menu, X, Phone, User, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, isAdmin, signOut } = useAuth();
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -15,6 +25,11 @@ const Header = () => {
   ];
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 glassmorphism">
@@ -55,9 +70,42 @@ const Header = () => {
               <Phone className="w-4 h-4" />
               <span>1800-000-0000</span>
             </a>
-            <Button asChild className="neo-button text-foreground hover:text-foreground">
-              <Link to="/login">Login</Link>
-            </Button>
+            
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="neo-card flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    <span className="max-w-[100px] truncate">{user.email?.split("@")[0]}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48 bg-card border-border">
+                  <DropdownMenuItem asChild>
+                    <Link to="/dashboard" className="cursor-pointer">
+                      <User className="w-4 h-4 mr-2" />
+                      My Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  {isAdmin && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin" className="cursor-pointer">
+                        <Settings className="w-4 h-4 mr-2" />
+                        Admin Panel
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive">
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button asChild className="neo-button text-foreground hover:text-foreground">
+                <Link to="/auth">Login</Link>
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -90,11 +138,41 @@ const Header = () => {
                 </Link>
               ))}
               <hr className="my-2 border-border" />
-              <Button asChild className="mx-4 neo-button text-foreground hover:text-foreground">
-                <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                  Login
-                </Link>
-              </Button>
+              {user ? (
+                <>
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground"
+                  >
+                    My Dashboard
+                  </Link>
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground"
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      setIsMenuOpen(false);
+                    }}
+                    className="px-4 py-3 rounded-lg text-sm font-medium text-destructive text-left"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <Button asChild className="mx-4 neo-button text-foreground hover:text-foreground">
+                  <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                    Login
+                  </Link>
+                </Button>
+              )}
             </div>
           </nav>
         )}
