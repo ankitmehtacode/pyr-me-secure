@@ -280,10 +280,9 @@ const Auth = () => {
                   {/* Google Sign In Button */}
                   <Button
                     type="button"
-                    variant="outline"
                     onClick={handleGoogleSignIn}
                     disabled={isLoading}
-                    className="w-full neo-button border-0 mb-4 flex items-center justify-center gap-3"
+                    className="w-full mb-4 flex items-center justify-center gap-3 bg-card border border-border hover:bg-accent text-foreground"
                     size="lg"
                   >
                     <svg className="w-5 h-5" viewBox="0 0 24 24">
