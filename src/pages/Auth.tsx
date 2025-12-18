@@ -333,7 +333,7 @@ const Auth = () => {
                         )}
                       </div>
 
-                      <Button type="submit" disabled={isLoading} className="w-full neo-button border-0 bg-primary text-primary-foreground hover:bg-primary/90" size="lg">
+                      <Button type="submit" disabled={isLoading} className="w-full border-0 bg-primary text-foreground hover:bg-primary/90" size="lg">
                         {isLoading ? "Signing in..." : "Sign In"}
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Button>
@@ -438,7 +438,7 @@ const Auth = () => {
                         )}
                       </div>
 
-                      <Button type="submit" disabled={isLoading} className="w-full neo-button border-0 bg-primary text-primary-foreground hover:bg-primary/90" size="lg">
+                      <Button type="submit" disabled={isLoading} className="w-full border-0 bg-primary text-foreground hover:bg-primary/90" size="lg">
                         {isLoading ? "Creating account..." : "Create Account"}
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Button>
