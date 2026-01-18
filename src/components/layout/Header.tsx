@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Shield, Menu, X, Phone, User, LogOut, Settings } from "lucide-react";
+import { Menu, X, Phone, User, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import prymeLogo from "@/assets/pryme-logo.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,14 +37,12 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl neo-card flex items-center justify-center group-hover:glow-primary transition-all duration-300">
-              <Shield className="w-5 h-5 text-primary" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-lg font-bold text-foreground tracking-tight">PYRME</span>
-              <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest -mt-1">Consulting</span>
-            </div>
+          <Link to="/" className="flex items-center gap-2 group">
+            <img 
+              src={prymeLogo} 
+              alt="PRYME" 
+              className="h-10 md:h-12 w-auto object-contain"
+            />
           </Link>
 
           {/* Desktop Navigation */}
