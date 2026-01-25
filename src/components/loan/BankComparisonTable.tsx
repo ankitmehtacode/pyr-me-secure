@@ -1,11 +1,10 @@
-import { Building2, ExternalLink, Phone, Download, Star } from "lucide-react";
+import { Building2, Star, ArrowRight, ExternalLink, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface BankOffer {
   id: string;
   bankName: string;
-  logo?: string;
   maxLoanAmount: number;
   roi: number;
   processingFee: string;
@@ -13,6 +12,7 @@ interface BankOffer {
   approvalProbability: number;
   processingTime: string;
   featured?: boolean;
+  recommended?: boolean;
 }
 
 interface BankComparisonTableProps {
@@ -23,14 +23,19 @@ interface BankComparisonTableProps {
   onApplyWithPyrme: (bankId: string) => void;
 }
 
-const BankComparisonTable = ({ 
-  offers, 
-  loanAmount, 
-  tenure, 
-  onApplyDirect, 
-  onApplyWithPyrme 
+const BankComparisonTable = ({
+  offers,
+  loanAmount,
+  tenure,
+  onApplyDirect,
+  onApplyWithPyrme,
 }: BankComparisonTableProps) => {
   const formatCurrency = (value: number) => {
+    if (value >= 10000000) {
+      return `₹${(value / 10000000).toFixed(2)} Cr`;
+    } else if (value >= 100000) {
+      return `₹${(value / 100000).toFixed(2)} L`;
+    }
     return new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
@@ -39,108 +44,219 @@ const BankComparisonTable = ({
   };
 
   const getApprovalColor = (probability: number) => {
-    if (probability >= 80) return "bg-success";
-    if (probability >= 60) return "bg-trust";
-    if (probability >= 40) return "bg-primary";
-    return "bg-destructive";
+    if (probability >= 80) return { bg: "bg-success", text: "text-success", label: "High" };
+    if (probability >= 60) return { bg: "bg-warning", text: "text-warning", label: "Medium" };
+    return { bg: "bg-destructive", text: "text-destructive", label: "Low" };
   };
 
   return (
     <div className="space-y-4">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-foreground">Best Loan Offers For You</h2>
-        <span className="text-sm text-muted-foreground">{offers.length} banks found</span>
+      {/* Desktop Table */}
+      <div className="hidden lg:block overflow-hidden">
+        <div className="card-elevated overflow-hidden">
+          <table className="data-table">
+            <thead className="bg-muted/50">
+              <tr>
+                <th className="w-[200px]">Bank</th>
+                <th>Max Loan</th>
+                <th>ROI</th>
+                <th>Processing Fee</th>
+                <th>Monthly EMI</th>
+                <th>Approval Probability</th>
+                <th>Time</th>
+                <th className="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {offers.map((offer) => {
+                const approval = getApprovalColor(offer.approvalProbability);
+                return (
+                  <tr 
+                    key={offer.id} 
+                    className={cn(
+                      "group transition-colors",
+                      offer.recommended && "bg-primary/5"
+                    )}
+                  >
+                    <td>
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                          <Building2 className="w-5 h-5 text-muted-foreground" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium text-foreground">{offer.bankName}</span>
+                            {offer.recommended && (
+                              <span className="badge-recommended flex items-center gap-1">
+                                <Star className="w-3 h-3 fill-trust" />
+                                Best Rate
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="font-medium text-foreground">{formatCurrency(offer.maxLoanAmount)}</td>
+                    <td>
+                      <span className={cn(
+                        "font-bold text-lg",
+                        offer.recommended ? "text-primary" : "text-foreground"
+                      )}>
+                        {offer.roi}%
+                      </span>
+                      <span className="text-xs text-muted-foreground block">p.a.</span>
+                    </td>
+                    <td className="text-muted-foreground">{offer.processingFee}</td>
+                    <td className="font-semibold text-foreground">{formatCurrency(offer.emi)}</td>
+                    <td>
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden max-w-[100px]">
+                            <div 
+                              className={cn("h-full rounded-full transition-all", approval.bg)}
+                              style={{ width: `${offer.approvalProbability}%` }}
+                            />
+                          </div>
+                          <span className={cn("text-sm font-medium", approval.text)}>
+                            {offer.approvalProbability}%
+                          </span>
+                        </div>
+                        <span className="text-xs text-muted-foreground">{approval.label} Probability</span>
+                      </div>
+                    </td>
+                    <td className="text-sm text-muted-foreground">{offer.processingTime}</td>
+                    <td>
+                      <div className="flex items-center justify-end gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => onApplyDirect(offer.id)}
+                          className="text-xs"
+                        >
+                          <ExternalLink className="w-3 h-3 mr-1" />
+                          Direct
+                        </Button>
+                        <Button
+                          size="sm"
+                          onClick={() => onApplyWithPyrme(offer.id)}
+                          className={cn(
+                            "text-xs",
+                            offer.recommended 
+                              ? "bg-primary text-primary-foreground hover:bg-primary/90" 
+                              : "bg-foreground text-background hover:bg-foreground/90"
+                          )}
+                        >
+                          With PRYME
+                          <ArrowRight className="w-3 h-3 ml-1" />
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* Mobile Cards / Desktop Table */}
-      <div className="space-y-4">
-        {offers.map((offer, index) => (
-          <div 
-            key={offer.id}
-            className={cn(
-              "neo-card p-4 md:p-6 transition-all duration-300 card-hover",
-              offer.featured && "ring-2 ring-trust glow-trust"
-            )}
-          >
-            {offer.featured && (
-              <div className="flex items-center gap-1 text-trust text-xs font-medium mb-3">
-                <Star className="w-3 h-3 fill-trust" />
-                <span>Best Match</span>
-              </div>
-            )}
-
-            <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-center">
-              {/* Bank Info */}
-              <div className="flex items-center gap-3 md:col-span-1">
-                <div className="w-12 h-12 rounded-xl neo-card-inset flex items-center justify-center">
-                  <Building2 className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">{offer.bankName}</p>
-                  <p className="text-xs text-muted-foreground">{offer.processingTime}</p>
-                </div>
-              </div>
-
-              {/* Loan Details Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:col-span-3">
-                <div>
-                  <p className="text-xs text-muted-foreground">Max Loan</p>
-                  <p className="font-semibold text-foreground">{formatCurrency(offer.maxLoanAmount)}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">ROI</p>
-                  <p className="font-semibold text-primary">{offer.roi}% p.a.</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Processing Fee</p>
-                  <p className="font-semibold text-foreground">{offer.processingFee}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">EMI</p>
-                  <p className="font-semibold text-success">{formatCurrency(offer.emi)}/mo</p>
-                </div>
-              </div>
-
-              {/* Approval Bar & Actions */}
-              <div className="md:col-span-2 space-y-3">
-                {/* Approval Probability */}
-                <div>
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-muted-foreground">Approval Chance</span>
-                    <span className="font-medium text-foreground">{offer.approvalProbability}%</span>
+      {/* Mobile Cards */}
+      <div className="lg:hidden space-y-4">
+        {offers.map((offer) => {
+          const approval = getApprovalColor(offer.approvalProbability);
+          return (
+            <div 
+              key={offer.id} 
+              className={cn(
+                "card-elevated p-5",
+                offer.recommended && "ring-2 ring-primary/20"
+              )}
+            >
+              {/* Header */}
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
+                    <Building2 className="w-6 h-6 text-muted-foreground" />
                   </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <div 
-                      className={cn("h-full rounded-full transition-all duration-500", getApprovalColor(offer.approvalProbability))}
-                      style={{ width: `${offer.approvalProbability}%` }}
-                    />
+                  <div>
+                    <p className="font-semibold text-foreground">{offer.bankName}</p>
+                    <p className="text-xs text-muted-foreground">{offer.processingTime}</p>
                   </div>
                 </div>
+                {offer.recommended && (
+                  <span className="badge-recommended flex items-center gap-1">
+                    <Star className="w-3 h-3 fill-trust" />
+                    Best
+                  </span>
+                )}
+              </div>
 
-                {/* Action Buttons */}
-                <div className="flex gap-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="flex-1 text-xs neo-button border-0"
-                    onClick={() => onApplyDirect(offer.id)}
-                  >
-                    Apply Direct
-                    <ExternalLink className="w-3 h-3 ml-1" />
-                  </Button>
-                  <Button 
-                    size="sm" 
-                    className="flex-1 text-xs bg-primary hover:bg-primary/90"
-                    onClick={() => onApplyWithPyrme(offer.id)}
-                  >
-                    Apply with PYRME
-                  </Button>
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="p-3 bg-muted/30 rounded-lg">
+                  <p className="text-xs text-muted-foreground mb-1">Interest Rate</p>
+                  <p className={cn(
+                    "text-xl font-bold",
+                    offer.recommended ? "text-primary" : "text-foreground"
+                  )}>
+                    {offer.roi}%
+                  </p>
                 </div>
+                <div className="p-3 bg-muted/30 rounded-lg">
+                  <p className="text-xs text-muted-foreground mb-1">Monthly EMI</p>
+                  <p className="text-xl font-bold text-foreground">{formatCurrency(offer.emi)}</p>
+                </div>
+                <div className="p-3 bg-muted/30 rounded-lg">
+                  <p className="text-xs text-muted-foreground mb-1">Max Loan</p>
+                  <p className="text-sm font-semibold text-foreground">{formatCurrency(offer.maxLoanAmount)}</p>
+                </div>
+                <div className="p-3 bg-muted/30 rounded-lg">
+                  <p className="text-xs text-muted-foreground mb-1">Processing Fee</p>
+                  <p className="text-sm font-semibold text-foreground">{offer.processingFee}</p>
+                </div>
+              </div>
+
+              {/* Approval Probability */}
+              <div className="mb-4 p-3 bg-muted/30 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs text-muted-foreground">Approval Probability</span>
+                  <span className={cn("text-sm font-semibold", approval.text)}>
+                    {offer.approvalProbability}% - {approval.label}
+                  </span>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div 
+                    className={cn("h-full rounded-full transition-all", approval.bg)}
+                    style={{ width: `${offer.approvalProbability}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => onApplyDirect(offer.id)}
+                >
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  Apply Direct
+                </Button>
+                <Button
+                  className={cn(
+                    "flex-1",
+                    offer.recommended 
+                      ? "bg-primary text-primary-foreground" 
+                      : "bg-foreground text-background"
+                  )}
+                  onClick={() => onApplyWithPyrme(offer.id)}
+                >
+                  With PRYME
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

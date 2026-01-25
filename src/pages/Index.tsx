@@ -2,29 +2,37 @@ import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
+import PartnerBankMarquee from "@/components/home/PartnerBankMarquee";
+import ProductSelectorGrid from "@/components/home/ProductSelectorGrid";
 import TrustMonologue from "@/components/home/TrustMonologue";
-import ServicesSection from "@/components/home/ServicesSection";
 import ProcessSection from "@/components/home/ProcessSection";
+import TestimonialsSlider from "@/components/home/TestimonialsSlider";
 
 const Index = () => {
   return (
     <>
       <Helmet>
-        <title>PYRME Consulting - Secure Loan Solutions | RBI Compliant</title>
+        <title>PRYME - Compare & Apply for Loans | Best Rates from 15+ Banks</title>
         <meta
           name="description"
-          content="Experience transparent loan processing with bank-grade security. Personal loans, business loans, home loans with competitive rates. RBI compliant and ISO 27001 certified."
+          content="Compare loan offers from 15+ banks. Personal loans, business loans, home loans with competitive rates. Quick approval, transparent process. Apply now!"
         />
-        <meta name="keywords" content="personal loan, business loan, home loan, loan against property, RBI compliant, secure loan" />
+        <meta name="keywords" content="personal loan, business loan, home loan, loan against property, compare loans, best interest rates, quick loan approval" />
+        <meta property="og:title" content="PRYME - Compare & Apply for Loans | Best Rates from 15+ Banks" />
+        <meta property="og:description" content="Compare loan offers from 15+ banks. Quick approval, transparent process." />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://pryme.in" />
       </Helmet>
 
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-background">
         <Header />
         <main className="flex-1">
           <HeroSection />
-          <TrustMonologue />
-          <ServicesSection />
+          <PartnerBankMarquee />
+          <ProductSelectorGrid />
           <ProcessSection />
+          <TrustMonologue />
+          <TestimonialsSlider />
         </main>
         <Footer />
       </div>

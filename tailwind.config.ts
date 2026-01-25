@@ -2,7 +2,12 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -14,8 +19,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
-        display: ["Playfair Display", "serif"],
+        sans: ["Inter", "DM Sans", "system-ui", "sans-serif"],
+        display: ["Inter", "system-ui", "sans-serif"],
+        mono: ["JetBrains Mono", "Menlo", "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -59,6 +65,14 @@ export default {
           DEFAULT: "hsl(var(--trust))",
           foreground: "hsl(var(--trust-foreground))",
         },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -76,11 +90,12 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        'neo': '8px 8px 16px hsl(220 15% 5%), -8px -8px 16px hsl(220 15% 18% / 0.05)',
-        'neo-sm': '4px 4px 8px hsl(220 15% 5%), -4px -4px 8px hsl(220 15% 18% / 0.05)',
-        'neo-inset': 'inset 4px 4px 8px hsl(220 15% 5%), inset -4px -4px 8px hsl(220 15% 18% / 0.05)',
-        'glow': '0 0 30px hsla(209, 100%, 50%, 0.3)',
-        'glow-trust': '0 0 30px hsla(38, 85%, 55%, 0.3)',
+        'elevated': '0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05)',
+        'elevated-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04)',
+        'elevated-xl': '0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04)',
+        'glow-primary': '0 0 30px hsla(148, 62%, 42%, 0.2)',
+        'glow-gold': '0 0 30px hsla(50, 100%, 50%, 0.2)',
+        'inner-glow': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
       },
       keyframes: {
         "accordion-down": {
@@ -95,21 +110,79 @@ export default {
           from: { opacity: "0" },
           to: { opacity: "1" },
         },
-        "slide-up": {
+        "fade-up": {
           from: { opacity: "0", transform: "translateY(20px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
+        "fade-down": {
+          from: { opacity: "0", transform: "translateY(-20px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "scale-in": {
+          from: { opacity: "0", transform: "scale(0.95)" },
+          to: { opacity: "1", transform: "scale(1)" },
+        },
+        "slide-in-right": {
+          from: { transform: "translateX(100%)" },
+          to: { transform: "translateX(0)" },
+        },
+        "slide-out-right": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(100%)" },
+        },
         "glow-pulse": {
-          "0%, 100%": { boxShadow: "0 0 20px hsla(209, 100%, 50%, 0.2)" },
-          "50%": { boxShadow: "0 0 40px hsla(209, 100%, 50%, 0.4)" },
+          "0%, 100%": { boxShadow: "0 0 20px hsla(148, 62%, 42%, 0.2)" },
+          "50%": { boxShadow: "0 0 40px hsla(148, 62%, 42%, 0.4)" },
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        "marquee": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-100%)" },
+        },
+        "ribbon-slide": {
+          "0%": { transform: "translateY(0)", opacity: "1" },
+          "25%": { transform: "translateY(-100%)", opacity: "0" },
+          "50%": { transform: "translateY(100%)", opacity: "0" },
+          "75%": { transform: "translateY(0)", opacity: "1" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        "counter": {
+          from: { "--num": "0" },
+          to: { "--num": "var(--target)" },
+        },
+        "shimmer": {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.6s ease-out forwards",
-        "slide-up": "slide-up 0.6s ease-out forwards",
+        "fade-in": "fade-in 0.5s ease-out forwards",
+        "fade-up": "fade-up 0.6s ease-out forwards",
+        "fade-down": "fade-down 0.6s ease-out forwards",
+        "scale-in": "scale-in 0.3s ease-out forwards",
+        "slide-in-right": "slide-in-right 0.3s ease-out",
+        "slide-out-right": "slide-out-right 0.3s ease-out",
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
+        "float": "float 3s ease-in-out infinite",
+        "marquee": "marquee 30s linear infinite",
+        "ribbon": "ribbon-slide 8s ease-in-out infinite",
+        "shimmer": "shimmer 2s linear infinite",
+      },
+      backgroundImage: {
+        'shimmer': 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%)',
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      },
+      spacing: {
+        '18': '4.5rem',
+        '22': '5.5rem',
+        '88': '22rem',
+        '112': '28rem',
+        '128': '32rem',
       },
     },
   },
