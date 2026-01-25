@@ -1,34 +1,78 @@
-import { TrendingUp, AlertCircle, CheckCircle, Info } from "lucide-react";
+import { TrendingUp, AlertCircle, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface EligibilityScoreProps {
-  score: number; // 0-100
+  score: number;
   cibilScore: number;
   monthlyIncome: number;
   loanAmount: number;
 }
 
 const EligibilityScore = ({ score, cibilScore, monthlyIncome, loanAmount }: EligibilityScoreProps) => {
-  const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-success";
-    if (score >= 60) return "text-trust";
-    if (score >= 40) return "text-primary";
-    return "text-destructive";
+  const getScoreDetails = () => {
+    if (score >= 80) {
+      return {
+        label: "Excellent",
+        color: "text-success",
+        bgColor: "bg-success",
+        description: "You have a high chance of approval with competitive rates.",
+        icon: CheckCircle,
+      };
+    } else if (score >= 60) {
+      return {
+        label: "Good",
+        color: "text-primary",
+        bgColor: "bg-primary",
+        description: "Your profile looks promising. A few improvements could boost your chances.",
+        icon: TrendingUp,
+      };
+    } else if (score >= 40) {
+      return {
+        label: "Fair",
+        color: "text-warning",
+        bgColor: "bg-warning",
+        description: "Consider improving your CIBIL score or adjusting loan amount.",
+        icon: AlertCircle,
+      };
+    }
+    return {
+      label: "Needs Work",
+      color: "text-destructive",
+      bgColor: "bg-destructive",
+      description: "Focus on improving your credit score before applying.",
+      icon: AlertCircle,
+    };
   };
 
-  const getScoreLabel = (score: number) => {
-    if (score >= 80) return "Excellent";
-    if (score >= 60) return "Good";
-    if (score >= 40) return "Fair";
-    return "Needs Improvement";
+  const details = getScoreDetails();
+  const IconComponent = details.icon;
+
+  // Calculate arc for circular progress
+  const radius = 70;
+  const circumference = 2 * Math.PI * radius;
+  const progressArc = (score / 100) * circumference;
+
+  const formatCurrency = (value: number) => {
+    if (value >= 100000) {
+      return `₹${(value / 100000).toFixed(1)}L`;
+    }
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(value);
   };
 
-  const strokeDashoffset = 283 - (283 * score) / 100;
+  const factors = [
+    { label: "CIBIL Score", value: cibilScore.toString(), status: cibilScore >= 750 ? "good" : cibilScore >= 650 ? "fair" : "poor" },
+    { label: "Income", value: formatCurrency(monthlyIncome), status: "good" },
+    { label: "Loan/Income Ratio", value: `${((loanAmount / (monthlyIncome * 12)) * 100).toFixed(1)}%`, status: loanAmount <= monthlyIncome * 36 ? "good" : "fair" },
+  ];
 
   return (
-    <div className="neo-card p-6">
+    <div className="card-elevated p-6">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-xl neo-card-inset flex items-center justify-center">
+        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
           <TrendingUp className="w-5 h-5 text-primary" />
         </div>
         <div>
@@ -37,79 +81,70 @@ const EligibilityScore = ({ score, cibilScore, monthlyIncome, loanAmount }: Elig
         </div>
       </div>
 
-      {/* Circular Score */}
+      {/* Circular Progress */}
       <div className="flex justify-center mb-6">
-        <div className="relative w-32 h-32">
-          <svg className="w-32 h-32 transform -rotate-90">
+        <div className="relative w-44 h-44">
+          <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
+            {/* Background circle */}
             <circle
-              cx="64"
-              cy="64"
-              r="45"
-              stroke="currentColor"
-              strokeWidth="8"
-              fill="transparent"
-              className="text-muted"
+              cx="80"
+              cy="80"
+              r={radius}
+              fill="none"
+              stroke="hsl(var(--muted))"
+              strokeWidth="12"
             />
+            {/* Progress circle */}
             <circle
-              cx="64"
-              cy="64"
-              r="45"
-              stroke="currentColor"
-              strokeWidth="8"
-              fill="transparent"
-              strokeDasharray="283"
-              strokeDashoffset={strokeDashoffset}
+              cx="80"
+              cy="80"
+              r={radius}
+              fill="none"
+              stroke={`hsl(var(--${score >= 80 ? "success" : score >= 60 ? "primary" : score >= 40 ? "warning" : "destructive"}))`}
+              strokeWidth="12"
               strokeLinecap="round"
-              className={cn("transition-all duration-1000", getScoreColor(score))}
+              strokeDasharray={circumference}
+              strokeDashoffset={circumference - progressArc}
+              className="transition-all duration-1000 ease-out"
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className={cn("text-3xl font-bold", getScoreColor(score))}>{score}</span>
-            <span className="text-xs text-muted-foreground">/100</span>
+            <span className={cn("text-4xl font-bold", details.color)}>{score}</span>
+            <span className="text-sm text-muted-foreground">out of 100</span>
           </div>
         </div>
       </div>
 
+      {/* Score Label */}
       <div className="text-center mb-6">
-        <span className={cn("text-lg font-semibold", getScoreColor(score))}>
-          {getScoreLabel(score)}
-        </span>
-      </div>
-
-      {/* Score Factors */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between p-3 neo-card-inset rounded-lg">
-          <span className="text-sm text-muted-foreground">CIBIL Score</span>
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-foreground">{cibilScore}</span>
-            {cibilScore >= 700 ? (
-              <CheckCircle className="w-4 h-4 text-success" />
-            ) : (
-              <AlertCircle className="w-4 h-4 text-trust" />
-            )}
-          </div>
+        <div className={cn(
+          "inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium",
+          details.bgColor + "/10",
+          details.color
+        )}>
+          <IconComponent className="w-4 h-4" />
+          {details.label}
         </div>
-
-        <div className="flex items-center justify-between p-3 neo-card-inset rounded-lg">
-          <span className="text-sm text-muted-foreground">Income-Loan Ratio</span>
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-foreground">
-              {((loanAmount / (monthlyIncome * 12)) * 100).toFixed(0)}%
-            </span>
-            {loanAmount <= monthlyIncome * 60 ? (
-              <CheckCircle className="w-4 h-4 text-success" />
-            ) : (
-              <AlertCircle className="w-4 h-4 text-destructive" />
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-4 p-3 bg-muted/50 rounded-lg flex items-start gap-2">
-        <Info className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-        <p className="text-xs text-muted-foreground">
-          Your eligibility score helps banks assess your loan application. A higher score increases approval chances.
+        <p className="text-sm text-muted-foreground mt-3 max-w-xs mx-auto">
+          {details.description}
         </p>
+      </div>
+
+      {/* Factors Breakdown */}
+      <div className="space-y-3 pt-4 border-t border-border">
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Contributing Factors</p>
+        {factors.map((factor) => (
+          <div key={factor.label} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+            <span className="text-sm text-foreground">{factor.label}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-foreground">{factor.value}</span>
+              <div className={cn(
+                "w-2 h-2 rounded-full",
+                factor.status === "good" ? "bg-success" : factor.status === "fair" ? "bg-warning" : "bg-destructive"
+              )} />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

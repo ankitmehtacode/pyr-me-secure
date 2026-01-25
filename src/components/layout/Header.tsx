@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Phone, User, LogOut, Settings } from "lucide-react";
+import { Menu, X, Phone, User, LogOut, Settings, ChevronDown, Calculator, FileText, Home, Briefcase, Building2, Wallet, Gift, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,17 +11,45 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 import prymeLogo from "@/assets/pryme-logo.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAdmin, signOut } = useAuth();
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const productLinks = [
+    { href: "/apply?type=personal", label: "Personal Loan", icon: Wallet, description: "Quick approval, minimal docs" },
+    { href: "/apply?type=business", label: "Business Loan", icon: Briefcase, description: "Fuel your business growth" },
+    { href: "/apply?type=home", label: "Home Loan", icon: Home, description: "Make your dream home real" },
+    { href: "/apply?type=lap", label: "Loan Against Property", icon: Building2, description: "Unlock your property value" },
+  ];
+
+  const toolLinks = [
+    { href: "/apply#emi-calculator", label: "EMI Calculator", icon: Calculator, description: "Calculate your monthly EMI" },
+    { href: "/apply#rewards", label: "Rewards Calculator", icon: Gift, description: "Discover your reward tier" },
+  ];
+
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/apply", label: "Apply for Loan" },
+    { href: "/apply", label: "Compare Loans" },
     { href: "/dashboard", label: "Track Application" },
   ];
 
@@ -33,20 +61,87 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 glassmorphism">
+    <header 
+      className={cn(
+        "sticky top-0 z-50 transition-all duration-300",
+        isScrolled 
+          ? "glassmorphism shadow-sm" 
+          : "bg-transparent"
+      )}
+    >
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-16 md:h-18">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
             <img 
               src={prymeLogo} 
               alt="PRYME" 
-              className="h-10 md:h-12 w-auto object-contain"
+              className="h-9 md:h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1">
+            <NavigationMenu>
+              <NavigationMenuList>
+                {/* Products Dropdown */}
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="h-9 px-4 text-sm font-medium text-muted-foreground hover:text-foreground bg-transparent hover:bg-muted/50">
+                    Products
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="w-[500px] p-4 bg-card border border-border rounded-xl shadow-lg">
+                      <div className="grid grid-cols-2 gap-2">
+                        {productLinks.map((item) => (
+                          <Link
+                            key={item.href}
+                            to={item.href}
+                            className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors group"
+                          >
+                            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                              <item.icon className="w-5 h-5 text-primary" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium text-foreground">{item.label}</p>
+                              <p className="text-xs text-muted-foreground">{item.description}</p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                {/* Tools Dropdown */}
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="h-9 px-4 text-sm font-medium text-muted-foreground hover:text-foreground bg-transparent hover:bg-muted/50">
+                    Tools
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="w-[300px] p-4 bg-card border border-border rounded-xl shadow-lg">
+                      <div className="space-y-2">
+                        {toolLinks.map((item) => (
+                          <Link
+                            key={item.href}
+                            to={item.href}
+                            className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors group"
+                          >
+                            <div className="w-9 h-9 rounded-lg bg-trust/10 flex items-center justify-center shrink-0 group-hover:bg-trust/20 transition-colors">
+                              <item.icon className="w-4 h-4 text-trust-foreground" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium text-foreground">{item.label}</p>
+                              <p className="text-xs text-muted-foreground">{item.description}</p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -54,8 +149,8 @@ const Header = () => {
                 className={cn(
                   "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                   isActive(link.href)
-                    ? "neo-card-inset text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:neo-card"
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 )}
               >
                 {link.label}
@@ -64,21 +159,27 @@ const Header = () => {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-4">
-            <a href="tel:1800-000-0000" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+          <div className="hidden lg:flex items-center gap-3">
+            <a 
+              href="tel:1800-000-0000" 
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors px-3 py-2 rounded-lg hover:bg-muted/50"
+            >
               <Phone className="w-4 h-4" />
-              <span>1800-000-0000</span>
+              <span className="hidden xl:inline">1800-000-0000</span>
             </a>
             
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="neo-card flex items-center gap-2">
-                    <User className="w-4 h-4" />
-                    <span className="max-w-[100px] truncate">{user.email?.split("@")[0]}</span>
+                  <Button variant="ghost" className="flex items-center gap-2 bg-muted/50 hover:bg-muted">
+                    <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
+                      <User className="w-4 h-4 text-primary" />
+                    </div>
+                    <span className="max-w-[100px] truncate text-sm">{user.email?.split("@")[0]}</span>
+                    <ChevronDown className="w-4 h-4 text-muted-foreground" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48 bg-card border-border">
+                <DropdownMenuContent align="end" className="w-48 bg-card border-border shadow-lg">
                   <DropdownMenuItem asChild>
                     <Link to="/dashboard" className="cursor-pointer">
                       <User className="w-4 h-4 mr-2" />
@@ -101,80 +202,185 @@ const Header = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button asChild className="neo-button text-foreground hover:text-foreground">
-                <Link to="/auth">Login</Link>
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button asChild variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                  <Link to="/auth">Sign In</Link>
+                </Button>
+                <Button asChild size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm">
+                  <Link to="/auth?mode=signup">Get Started</Link>
+                </Button>
+              </div>
             )}
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-lg neo-card transition-all"
+            className="lg:hidden p-2 rounded-lg hover:bg-muted/50 transition-all"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-border animate-fade-in">
-            <div className="flex flex-col gap-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={cn(
-                    "px-4 py-3 rounded-lg text-sm font-medium transition-all",
-                    isActive(link.href)
-                      ? "neo-card-inset text-primary"
-                      : "text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <hr className="my-2 border-border" />
-              {user ? (
-                <>
-                  <Link
-                    to="/dashboard"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground"
-                  >
-                    My Dashboard
-                  </Link>
-                  {isAdmin && (
-                    <Link
-                      to="/admin"
-                      onClick={() => setIsMenuOpen(false)}
-                      className="px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground"
-                    >
-                      Admin Panel
-                    </Link>
-                  )}
-                  <button
-                    onClick={() => {
-                      handleSignOut();
-                      setIsMenuOpen(false);
-                    }}
-                    className="px-4 py-3 rounded-lg text-sm font-medium text-destructive text-left"
-                  >
-                    Sign Out
-                  </button>
-                </>
-              ) : (
-                <Button asChild className="mx-4 neo-button text-foreground hover:text-foreground">
-                  <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-                    Login
-                  </Link>
-                </Button>
-              )}
+        {/* Mobile Navigation - Slide-out drawer */}
+        <div 
+          className={cn(
+            "lg:hidden fixed inset-0 z-50 transition-all duration-300",
+            isMenuOpen ? "visible" : "invisible"
+          )}
+        >
+          {/* Backdrop */}
+          <div 
+            className={cn(
+              "absolute inset-0 bg-foreground/20 backdrop-blur-sm transition-opacity duration-300",
+              isMenuOpen ? "opacity-100" : "opacity-0"
+            )}
+            onClick={() => setIsMenuOpen(false)}
+          />
+          
+          {/* Drawer */}
+          <div 
+            className={cn(
+              "absolute right-0 top-0 h-full w-[300px] bg-card border-l border-border shadow-xl transition-transform duration-300",
+              isMenuOpen ? "translate-x-0" : "translate-x-full"
+            )}
+          >
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <span className="font-semibold text-foreground">Menu</span>
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className="p-2 rounded-lg hover:bg-muted/50"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
-          </nav>
-        )}
+
+            <div className="p-4 space-y-6 overflow-y-auto h-[calc(100%-64px)]">
+              {/* Products Section */}
+              <div>
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">Products</p>
+                <div className="space-y-1">
+                  {productLinks.map((item) => (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <item.icon className="w-4 h-4 text-primary" />
+                      </div>
+                      <span className="text-sm font-medium text-foreground">{item.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Tools Section */}
+              <div>
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">Tools</p>
+                <div className="space-y-1">
+                  {toolLinks.map((item) => (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-trust/10 flex items-center justify-center">
+                        <item.icon className="w-4 h-4 text-trust-foreground" />
+                      </div>
+                      <span className="text-sm font-medium text-foreground">{item.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Navigation Links */}
+              <div>
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">Navigate</p>
+                <div className="space-y-1">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      to={link.href}
+                      onClick={() => setIsMenuOpen(false)}
+                      className={cn(
+                        "block p-3 rounded-lg text-sm font-medium transition-all",
+                        isActive(link.href)
+                          ? "bg-primary/10 text-primary"
+                          : "text-foreground hover:bg-muted/50"
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Auth Section */}
+              <div className="pt-4 border-t border-border">
+                {user ? (
+                  <div className="space-y-2">
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50"
+                    >
+                      <User className="w-4 h-4" />
+                      <span className="text-sm font-medium">My Dashboard</span>
+                    </Link>
+                    {isAdmin && (
+                      <Link
+                        to="/admin"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50"
+                      >
+                        <Settings className="w-4 h-4" />
+                        <span className="text-sm font-medium">Admin Panel</span>
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => {
+                        handleSignOut();
+                        setIsMenuOpen(false);
+                      }}
+                      className="flex items-center gap-3 p-3 rounded-lg text-destructive hover:bg-destructive/10 w-full"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span className="text-sm font-medium">Sign Out</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <Button asChild className="w-full bg-primary text-primary-foreground">
+                      <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                        Get Started
+                      </Link>
+                    </Button>
+                    <Button asChild variant="outline" className="w-full">
+                      <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                        Sign In
+                      </Link>
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              {/* Contact */}
+              <div className="pt-4 border-t border-border">
+                <a 
+                  href="tel:1800-000-0000" 
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50"
+                >
+                  <Phone className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-medium">1800-000-0000</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
   );
