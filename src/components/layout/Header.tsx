@@ -71,12 +71,12 @@ const Header = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-18">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
+          {/* Logo - No background, vertically centered */}
+          <Link to="/" className="flex items-center group">
             <img 
               src={prymeLogo} 
               alt="PRYME" 
-              className="h-9 md:h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              className="h-8 md:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
           </Link>
 
@@ -150,7 +150,7 @@ const Header = () => {
                   "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                   isActive(link.href)
                     ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    : "text-muted-foreground hover:text-primary font-medium"
                 )}
               >
                 {link.label}
@@ -203,10 +203,10 @@ const Header = () => {
               </DropdownMenu>
             ) : (
               <div className="flex items-center gap-3">
-                <Button asChild variant="ghost" size="sm">
+                <Button asChild variant="ghost" size="sm" className="font-medium">
                   <Link to="/auth">Sign In</Link>
                 </Button>
-                <Button asChild variant="primary" size="sm">
+                <Button asChild variant="primary" size="sm" className="focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background">
                   <Link to="/auth?mode=signup">Get Started</Link>
                 </Button>
               </div>

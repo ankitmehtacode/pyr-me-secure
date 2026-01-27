@@ -18,7 +18,7 @@ const PartnerBankMarquee = () => {
   ];
 
   return (
-    <section className="py-10 md:py-14 border-y border-border/50 bg-card/30">
+    <section className="py-8 md:py-12 border-y border-border/50 bg-card/30">
       <div className="container mx-auto px-4 mb-6">
         <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
           <Building2 className="w-4 h-4" />
@@ -31,10 +31,10 @@ const PartnerBankMarquee = () => {
           {banks.map((bank) => (
             <div
               key={bank.id}
-              className="flex items-center gap-3 px-6 py-3 mx-4 bg-card border border-border/50 rounded-xl bank-logo hover:shadow-md transition-all duration-300"
+              className="group flex items-center gap-3 px-5 py-2.5 mx-3 bg-card border border-border/50 rounded-xl transition-all duration-300 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 hover:shadow-md"
             >
-              <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                <Building2 className="w-5 h-5 text-muted-foreground" />
+              <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center">
+                <Building2 className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
               <span className="text-sm font-medium text-foreground whitespace-nowrap">{bank.name}</span>
             </div>
@@ -44,10 +44,10 @@ const PartnerBankMarquee = () => {
           {banks.map((bank) => (
             <div
               key={`${bank.id}-dup`}
-              className="flex items-center gap-3 px-6 py-3 mx-4 bg-card border border-border/50 rounded-xl bank-logo hover:shadow-md transition-all duration-300"
+              className="group flex items-center gap-3 px-5 py-2.5 mx-3 bg-card border border-border/50 rounded-xl transition-all duration-300 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 hover:shadow-md"
             >
-              <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                <Building2 className="w-5 h-5 text-muted-foreground" />
+              <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center">
+                <Building2 className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
               <span className="text-sm font-medium text-foreground whitespace-nowrap">{bank.name}</span>
             </div>

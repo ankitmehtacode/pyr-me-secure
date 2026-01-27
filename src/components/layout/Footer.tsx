@@ -74,14 +74,14 @@ const Footer = () => {
               Your trusted partner for transparent, secure, and efficient loan processing. Compare rates from 15+ banks and get the best deal.
             </p>
             
-            {/* Newsletter */}
+            {/* Newsletter - Glassmorphism input */}
             <div className="space-y-3">
               <p className="text-sm font-medium text-background">Stay Updated</p>
               <div className="flex gap-2">
                 <Input 
                   type="email" 
                   placeholder="Enter your email" 
-                  className="h-10 bg-background/10 border-background/20 text-background placeholder:text-background/50 focus:border-primary"
+                  className="h-10 bg-transparent border-background/30 text-background placeholder:text-background/40 focus:border-background focus:ring-background/20 backdrop-blur-sm"
                 />
                 <Button size="sm" className="h-10 bg-primary hover:bg-primary/90 text-primary-foreground px-4">
                   <ArrowRight className="w-4 h-4" />
@@ -112,7 +112,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {productLinks.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.href} className="text-sm text-background/70 hover:text-primary transition-colors">
+                  <Link to={link.href} className="text-sm text-gray-400 hover:text-primary transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -126,7 +126,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {toolLinks.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.href} className="text-sm text-background/70 hover:text-primary transition-colors">
+                  <Link to={link.href} className="text-sm text-gray-400 hover:text-primary transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -140,7 +140,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {companyLinks.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.href} className="text-sm text-background/70 hover:text-primary transition-colors">
+                  <Link to={link.href} className="text-sm text-gray-400 hover:text-primary transition-colors">
                     {link.label}
                   </Link>
                 </li>

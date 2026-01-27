@@ -122,7 +122,7 @@ const TestimonialsSlider = () => {
                     : "opacity-40 scale-90 z-10 translate-x-[60%] hidden md:block"
                 }`}
               >
-                <div className="card-elevated p-8 mx-4">
+                <div className="bg-card rounded-xl border border-border p-8 mx-4 shadow-elevated">
                   {/* Quote Icon */}
                   <Quote className="w-10 h-10 text-primary/20 mb-4" />
 
@@ -141,7 +141,8 @@ const TestimonialsSlider = () => {
                   {/* Author */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                      {/* Avatar with ring-2 ring-white separator */}
+                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center ring-2 ring-white shadow-sm">
                         <span className="text-sm font-bold text-primary">{testimonial.avatar}</span>
                       </div>
                       <div>

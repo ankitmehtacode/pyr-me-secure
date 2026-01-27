@@ -68,15 +68,15 @@ const ProductSelectorGrid = () => {
             <Link
               key={product.title}
               to={product.href}
-              className="group card-elevated p-6 md:p-8 overflow-hidden relative hover-lift"
+              className="group bg-card rounded-xl border border-border/50 p-6 md:p-8 overflow-hidden relative transition-all duration-300 hover:scale-[1.02] hover:border-primary hover:shadow-elevated-lg"
             >
               {/* Background Gradient */}
               <div className={`absolute inset-0 bg-gradient-to-br ${product.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
               
               <div className="relative">
-                {/* Icon */}
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                  <product.icon className="w-7 h-7 text-primary" />
+                {/* Icon - Increased container size */}
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-300">
+                  <product.icon className="w-7 h-7 text-primary" strokeWidth={2} />
                 </div>
 
                 {/* Content */}
@@ -101,14 +101,12 @@ const ProductSelectorGrid = () => {
                   </div>
                 </div>
 
-                {/* CTA */}
+                {/* CTA - Ghost button style with chevron */}
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-primary group-hover:text-primary/80 transition-colors">
+                  <button className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-primary/30 text-sm font-medium text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
                     Apply Now
-                  </span>
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-                    <ArrowRight className="w-5 h-5 transform group-hover:translate-x-0.5 transition-transform" />
-                  </div>
+                    <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                  </button>
                 </div>
               </div>
             </Link>
