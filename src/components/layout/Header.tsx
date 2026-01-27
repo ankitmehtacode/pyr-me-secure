@@ -202,11 +202,11 @@ const Header = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <div className="flex items-center gap-2">
-                <Button asChild variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+              <div className="flex items-center gap-3">
+                <Button asChild variant="ghost" size="sm">
                   <Link to="/auth">Sign In</Link>
                 </Button>
-                <Button asChild size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm">
+                <Button asChild variant="primary" size="sm">
                   <Link to="/auth?mode=signup">Get Started</Link>
                 </Button>
               </div>
@@ -354,12 +354,12 @@ const Header = () => {
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    <Button asChild className="w-full bg-primary text-primary-foreground">
-                      <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                    <Button asChild variant="primary" className="w-full">
+                      <Link to="/auth?mode=signup" onClick={() => setIsMenuOpen(false)}>
                         Get Started
                       </Link>
                     </Button>
-                    <Button asChild variant="outline" className="w-full">
+                    <Button asChild className="w-full">
                       <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
                         Sign In
                       </Link>

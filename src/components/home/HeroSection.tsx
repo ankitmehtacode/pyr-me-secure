@@ -98,23 +98,23 @@ const HeroSection = () => {
             Transparent. Secure. Fast.
           </p>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons - Strategic placement for lead gen */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-fade-up animation-delay-400">
             <Button 
               asChild 
-              size="lg" 
-              className="w-full sm:w-auto h-14 px-8 text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] rounded-full"
+              variant="primary"
+              size="xl"
+              className="w-full sm:w-auto"
             >
               <Link to="/apply">
-                Check Eligibility Now
+                Check Eligibility
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </Button>
             <Button 
               asChild 
-              size="lg" 
-              variant="outline"
-              className="w-full sm:w-auto h-14 px-8 text-base font-semibold border-border hover:bg-muted/50 rounded-full"
+              size="xl"
+              className="w-full sm:w-auto"
             >
               <Link to="/apply#emi-calculator">
                 Calculate EMI
