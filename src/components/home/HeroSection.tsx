@@ -88,10 +88,8 @@ const HeroSection = () => {
 
           {/* Headline */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-tight mb-6 animate-fade-up animation-delay-200">
-            Unlock Your{" "}
-            <span className="text-gradient">Financial Potential</span>
-            <br className="hidden sm:block" />
-            with Smart Loans
+            Smart Loans.{" "}
+            <span className="text-gradient">Better Rates.</span>
           </h1>
 
           {/* Subtitle */}
