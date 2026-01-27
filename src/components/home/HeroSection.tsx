@@ -86,8 +86,8 @@ const HeroSection = () => {
             </span>
           </div>
 
-          {/* Headline */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-tight mb-6 animate-fade-up animation-delay-200">
+          {/* Headline - Tighter typography */}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground mb-6 animate-fade-up animation-delay-200" style={{ letterSpacing: '-0.02em', lineHeight: '1.1' }}>
             Smart Loans.{" "}
             <span className="text-gradient">Better Rates.</span>
           </h1>
