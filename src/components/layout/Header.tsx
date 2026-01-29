@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Phone, User, LogOut, Settings, ChevronDown, Calculator, FileText, Home, Briefcase, Building2, Wallet, Gift, BookOpen } from "lucide-react";
+import { Menu, X, Phone, User, LogOut, Settings, ChevronDown, Calculator, Home, Briefcase, Building2, Wallet, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
@@ -19,6 +19,9 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import prymeLogo from "@/assets/pryme-logo.png";
+
+const CONTACT_PHONE = "1800-309-4001";
+const CONTACT_PHONE_LINK = "tel:18003094001";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -71,7 +74,7 @@ const Header = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-18">
-          {/* Logo - No background, vertically centered */}
+          {/* Logo */}
           <Link to="/" className="flex items-center group">
             <img 
               src={prymeLogo} 
@@ -84,7 +87,6 @@ const Header = () => {
           <nav className="hidden lg:flex items-center gap-1">
             <NavigationMenu>
               <NavigationMenuList>
-                {/* Products Dropdown */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="h-9 px-4 text-sm font-medium text-muted-foreground hover:text-foreground bg-transparent hover:bg-muted/50">
                     Products
@@ -112,7 +114,6 @@ const Header = () => {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
 
-                {/* Tools Dropdown */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="h-9 px-4 text-sm font-medium text-muted-foreground hover:text-foreground bg-transparent hover:bg-muted/50">
                     Tools
@@ -161,11 +162,11 @@ const Header = () => {
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <a 
-              href="tel:1800-000-0000" 
+              href={CONTACT_PHONE_LINK}
               className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors px-3 py-2 rounded-lg hover:bg-muted/50"
             >
               <Phone className="w-4 h-4" />
-              <span className="hidden xl:inline">1800-000-0000</span>
+              <span className="hidden xl:inline">{CONTACT_PHONE}</span>
             </a>
             
             {user ? (
@@ -223,14 +224,13 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Mobile Navigation - Slide-out drawer */}
+        {/* Mobile Navigation */}
         <div 
           className={cn(
             "lg:hidden fixed inset-0 z-50 transition-all duration-300",
             isMenuOpen ? "visible" : "invisible"
           )}
         >
-          {/* Backdrop */}
           <div 
             className={cn(
               "absolute inset-0 bg-foreground/20 backdrop-blur-sm transition-opacity duration-300",
@@ -239,7 +239,6 @@ const Header = () => {
             onClick={() => setIsMenuOpen(false)}
           />
           
-          {/* Drawer */}
           <div 
             className={cn(
               "absolute right-0 top-0 h-full w-[300px] bg-card border-l border-border shadow-xl transition-transform duration-300",
@@ -257,7 +256,6 @@ const Header = () => {
             </div>
 
             <div className="p-4 space-y-6 overflow-y-auto h-[calc(100%-64px)]">
-              {/* Products Section */}
               <div>
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">Products</p>
                 <div className="space-y-1">
@@ -277,7 +275,6 @@ const Header = () => {
                 </div>
               </div>
 
-              {/* Tools Section */}
               <div>
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">Tools</p>
                 <div className="space-y-1">
@@ -297,7 +294,6 @@ const Header = () => {
                 </div>
               </div>
 
-              {/* Navigation Links */}
               <div>
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">Navigate</p>
                 <div className="space-y-1">
@@ -319,7 +315,6 @@ const Header = () => {
                 </div>
               </div>
 
-              {/* Auth Section */}
               <div className="pt-4 border-t border-border">
                 {user ? (
                   <div className="space-y-2">
@@ -368,14 +363,13 @@ const Header = () => {
                 )}
               </div>
 
-              {/* Contact */}
               <div className="pt-4 border-t border-border">
                 <a 
-                  href="tel:1800-000-0000" 
+                  href={CONTACT_PHONE_LINK}
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50"
                 >
                   <Phone className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-medium">1800-000-0000</span>
+                  <span className="text-sm font-medium">{CONTACT_PHONE}</span>
                 </a>
               </div>
             </div>

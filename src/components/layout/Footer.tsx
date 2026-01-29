@@ -4,6 +4,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import prymeLogo from "@/assets/pryme-logo.png";
 
+const CONTACT_PHONE = "1800-309-4001";
+const CONTACT_PHONE_LINK = "tel:18003094001";
+const CONTACT_EMAIL = "hello@pryme.in";
+const COMPANY_ADDRESS = "WeWork, Bandra Kurla Complex, Mumbai 400051";
+
+const SOCIAL_LINKS = {
+  linkedin: "https://linkedin.com/company/prymefinance",
+  twitter: "https://twitter.com/prymefinance",
+  facebook: "https://facebook.com/prymefinance",
+  instagram: "https://instagram.com/prymefinance",
+};
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -65,7 +77,7 @@ const Footer = () => {
       {/* Main Footer */}
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-          {/* Company Info - Spans 2 cols on lg */}
+          {/* Company Info */}
           <div className="col-span-2 lg:col-span-2 space-y-6">
             <Link to="/" className="inline-block">
               <img src={prymeLogo} alt="PRYME" className="h-10 brightness-0 invert" />
@@ -74,7 +86,7 @@ const Footer = () => {
               Your trusted partner for transparent, secure, and efficient loan processing. Compare rates from 15+ banks and get the best deal.
             </p>
             
-            {/* Newsletter - Glassmorphism input */}
+            {/* Newsletter */}
             <div className="space-y-3">
               <p className="text-sm font-medium text-background">Stay Updated</p>
               <div className="flex gap-2">
@@ -91,16 +103,40 @@ const Footer = () => {
 
             {/* Social Links */}
             <div className="flex gap-3">
-              <a href="#" className="w-10 h-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+              <a 
+                href={SOCIAL_LINKS.linkedin} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                aria-label="LinkedIn"
+              >
                 <Linkedin className="w-4 h-4" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+              <a 
+                href={SOCIAL_LINKS.twitter} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                aria-label="Twitter"
+              >
                 <Twitter className="w-4 h-4" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+              <a 
+                href={SOCIAL_LINKS.facebook} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                aria-label="Facebook"
+              >
                 <Facebook className="w-4 h-4" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+              <a 
+                href={SOCIAL_LINKS.instagram} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                aria-label="Instagram"
+              >
                 <Instagram className="w-4 h-4" />
               </a>
             </div>
@@ -112,7 +148,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {productLinks.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.href} className="text-sm text-gray-400 hover:text-primary transition-colors">
+                  <Link to={link.href} className="text-sm text-background/60 hover:text-primary transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -126,7 +162,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {toolLinks.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.href} className="text-sm text-gray-400 hover:text-primary transition-colors">
+                  <Link to={link.href} className="text-sm text-background/60 hover:text-primary transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -140,7 +176,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {companyLinks.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.href} className="text-sm text-gray-400 hover:text-primary transition-colors">
+                  <Link to={link.href} className="text-sm text-background/60 hover:text-primary transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -155,22 +191,22 @@ const Footer = () => {
               <li className="flex items-start gap-2">
                 <Phone className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                 <div>
-                  <a href="tel:1800-000-0000" className="text-sm text-background/70 hover:text-primary transition-colors block">
-                    1800-000-0000
+                  <a href={CONTACT_PHONE_LINK} className="text-sm text-background/70 hover:text-primary transition-colors block">
+                    {CONTACT_PHONE}
                   </a>
                   <span className="text-xs text-background/50">Toll-free, 9 AM - 9 PM</span>
                 </div>
               </li>
               <li className="flex items-start gap-2">
                 <Mail className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                <a href="mailto:support@pryme.in" className="text-sm text-background/70 hover:text-primary transition-colors">
-                  support@pryme.in
+                <a href={`mailto:${CONTACT_EMAIL}`} className="text-sm text-background/70 hover:text-primary transition-colors">
+                  {CONTACT_EMAIL}
                 </a>
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                 <span className="text-sm text-background/70">
-                  Mumbai, Maharashtra, India
+                  {COMPANY_ADDRESS}
                 </span>
               </li>
             </ul>
@@ -182,10 +218,9 @@ const Footer = () => {
       <div className="border-t border-background/10">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            {/* Copyright & Legal Links */}
             <div className="flex flex-col md:flex-row md:items-center gap-4">
               <p className="text-xs text-background/50">
-                © {currentYear} PRYME Consulting. All rights reserved.
+                © {currentYear} PRYME Consulting Pvt. Ltd. All rights reserved. CIN: U74999MH2024PTC123456
               </p>
               <div className="flex flex-wrap gap-4">
                 {legalLinks.map((link) => (

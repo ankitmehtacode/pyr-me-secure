@@ -86,7 +86,7 @@ const HeroSection = () => {
             </span>
           </div>
 
-          {/* Headline - Tighter typography */}
+          {/* Headline */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground mb-6 animate-fade-up animation-delay-200" style={{ letterSpacing: '-0.02em', lineHeight: '1.1' }}>
             Smart Loans.{" "}
             <span className="text-gradient">Better Rates.</span>
@@ -98,7 +98,7 @@ const HeroSection = () => {
             Transparent. Secure. Fast.
           </p>
 
-          {/* CTA Buttons - Strategic placement for lead gen */}
+          {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-fade-up animation-delay-400">
             <Button 
               asChild 
@@ -124,7 +124,7 @@ const HeroSection = () => {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 max-w-3xl mx-auto animate-fade-up animation-delay-500">
-            {stats.map((stat, index) => (
+            {stats.map((stat) => (
               <div
                 key={stat.label}
                 className="card-elevated p-6 text-center group"
