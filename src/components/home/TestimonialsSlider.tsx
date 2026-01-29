@@ -69,7 +69,9 @@ const TestimonialsSlider = () => {
   // Format items for CircularGallery
   const galleryItems = testimonials.map((t) => ({
     image: t.image,
-    text: `"${t.quote.substring(0, 80)}..." — ${t.name}, ${t.role}`,
+    quote: t.quote,
+    name: t.name,
+    role: `${t.role}, ${t.location}`,
   }));
 
   return (
