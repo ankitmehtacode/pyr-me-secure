@@ -1,11 +1,7 @@
-import { useState, useEffect } from "react";
-import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Star, Quote } from "lucide-react";
+import CircularGallery from "@/components/ui/CircularGallery";
 
 const TestimonialsSlider = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-
   const testimonials = [
     {
       id: 1,
@@ -17,6 +13,8 @@ const TestimonialsSlider = () => {
       quote: "PRYME made my business loan application seamless. Got approval in just 24 hours with the best interest rate in the market. Highly recommend!",
       loanType: "Business Loan",
       amount: "₹25 Lakh",
+      // Professional stock photo placeholders
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop&auto=format",
     },
     {
       id: 2,
@@ -28,6 +26,7 @@ const TestimonialsSlider = () => {
       quote: "The EMI calculator helped me plan my finances perfectly. Transparent process, no hidden charges. Best decision I made for my home loan.",
       loanType: "Home Loan",
       amount: "₹75 Lakh",
+      image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=300&fit=crop&auto=format",
     },
     {
       id: 3,
@@ -39,6 +38,7 @@ const TestimonialsSlider = () => {
       quote: "Exceptional service! The RM assigned to me was knowledgeable and helped me get a better rate than what I was offered elsewhere.",
       loanType: "Personal Loan",
       amount: "₹10 Lakh",
+      image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=300&fit=crop&auto=format",
     },
     {
       id: 4,
@@ -50,6 +50,7 @@ const TestimonialsSlider = () => {
       quote: "Comparing multiple banks in one place saved me hours of research. The cashback offer was a pleasant bonus!",
       loanType: "Loan Against Property",
       amount: "₹50 Lakh",
+      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=300&fit=crop&auto=format",
     },
     {
       id: 5,
@@ -61,41 +62,21 @@ const TestimonialsSlider = () => {
       quote: "Simple, fast, and reliable. The document upload process was smooth, and I received my loan within a week.",
       loanType: "Personal Loan",
       amount: "₹5 Lakh",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=300&fit=crop&auto=format",
     },
   ];
 
-  useEffect(() => {
-    if (!isAutoPlaying) return;
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [isAutoPlaying, testimonials.length]);
-
-  const nextSlide = () => {
-    setIsAutoPlaying(false);
-    setCurrentSlide((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const prevSlide = () => {
-    setIsAutoPlaying(false);
-    setCurrentSlide((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
-  const getVisibleTestimonials = () => {
-    const visible = [];
-    for (let i = -1; i <= 1; i++) {
-      const index = (currentSlide + i + testimonials.length) % testimonials.length;
-      visible.push({ ...testimonials[index], position: i });
-    }
-    return visible;
-  };
+  // Format items for CircularGallery
+  const galleryItems = testimonials.map((t) => ({
+    image: t.image,
+    text: `"${t.quote.substring(0, 80)}..." — ${t.name}, ${t.role}`,
+  }));
 
   return (
     <section className="py-20 md:py-28 section-gradient overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <span className="inline-block text-xs font-medium text-primary uppercase tracking-widest mb-4">
             Testimonials
           </span>
@@ -107,95 +88,35 @@ const TestimonialsSlider = () => {
           </p>
         </div>
 
-        {/* Slider */}
-        <div className="relative max-w-6xl mx-auto">
-          {/* Cards Container */}
-          <div className="relative h-[400px] md:h-[350px] flex items-center justify-center">
-            {getVisibleTestimonials().map((testimonial) => (
-              <div
-                key={`${testimonial.id}-${testimonial.position}`}
-                className={`absolute w-full max-w-lg transition-all duration-500 ease-out ${
-                  testimonial.position === 0
-                    ? "opacity-100 scale-100 z-20 translate-x-0"
-                    : testimonial.position === -1
-                    ? "opacity-40 scale-90 z-10 -translate-x-[60%] hidden md:block"
-                    : "opacity-40 scale-90 z-10 translate-x-[60%] hidden md:block"
-                }`}
-              >
-                <div className="bg-card rounded-xl border border-border p-8 mx-4 shadow-elevated">
-                  {/* Quote Icon */}
-                  <Quote className="w-10 h-10 text-primary/20 mb-4" />
+        {/* Circular Gallery */}
+        <div className="h-[400px] md:h-[500px] w-full max-w-6xl mx-auto">
+          <CircularGallery
+            items={galleryItems}
+            bend={3}
+            textColor="hsl(var(--foreground))"
+            borderRadius={0.08}
+            scrollSpeed={2}
+            scrollEase={0.05}
+          />
+        </div>
 
-                  {/* Rating */}
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 fill-trust text-trust" />
-                    ))}
-                  </div>
-
-                  {/* Quote */}
-                  <p className="text-foreground text-lg leading-relaxed mb-6">
-                    "{testimonial.quote}"
-                  </p>
-
-                  {/* Author */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      {/* Avatar with ring-2 ring-white separator */}
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center ring-2 ring-white shadow-sm">
-                        <span className="text-sm font-bold text-primary">{testimonial.avatar}</span>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-foreground">{testimonial.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {testimonial.role} • {testimonial.location}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right hidden sm:block">
-                      <p className="text-sm font-medium text-primary">{testimonial.loanType}</p>
-                      <p className="text-sm text-muted-foreground">{testimonial.amount}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Navigation */}
-          <div className="flex items-center justify-center gap-4 mt-8">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={prevSlide}
-              className="w-12 h-12 rounded-full border-border hover:bg-muted"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </Button>
-            
-            <div className="flex gap-2">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    setIsAutoPlaying(false);
-                    setCurrentSlide(index);
-                  }}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    index === currentSlide ? "bg-primary w-8" : "bg-muted-foreground/30 w-2 hover:bg-muted-foreground/50"
-                  }`}
-                />
+        {/* Trust indicators */}
+        <div className="flex items-center justify-center gap-8 mt-12">
+          <div className="flex items-center gap-2">
+            <div className="flex">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-5 h-5 fill-trust text-trust" />
               ))}
             </div>
-
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={nextSlide}
-              className="w-12 h-12 rounded-full border-border hover:bg-muted"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </Button>
+            <span className="text-sm font-medium text-foreground">4.9/5</span>
+          </div>
+          <div className="h-6 w-px bg-border" />
+          <div className="text-sm text-muted-foreground">
+            <span className="font-semibold text-foreground">10,000+</span> Happy Customers
+          </div>
+          <div className="h-6 w-px bg-border hidden sm:block" />
+          <div className="text-sm text-muted-foreground hidden sm:block">
+            <span className="font-semibold text-foreground">₹500Cr+</span> Loans Disbursed
           </div>
         </div>
       </div>
