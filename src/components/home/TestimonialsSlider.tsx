@@ -1,4 +1,5 @@
 import { Star, Quote } from "lucide-react";
+import { motion } from "framer-motion";
 import CircularGallery from "@/components/ui/CircularGallery";
 
 const TestimonialsSlider = () => {
@@ -8,12 +9,10 @@ const TestimonialsSlider = () => {
       name: "Rajesh Kumar",
       role: "Business Owner",
       location: "Mumbai",
-      avatar: "RK",
       rating: 5,
       quote: "PRYME made my business loan application seamless. Got approval in just 24 hours with the best interest rate in the market. Highly recommend!",
       loanType: "Business Loan",
       amount: "₹25 Lakh",
-      // Professional stock photo placeholders
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop&auto=format",
     },
     {
@@ -21,7 +20,6 @@ const TestimonialsSlider = () => {
       name: "Priya Sharma",
       role: "IT Professional",
       location: "Bangalore",
-      avatar: "PS",
       rating: 5,
       quote: "The EMI calculator helped me plan my finances perfectly. Transparent process, no hidden charges. Best decision I made for my home loan.",
       loanType: "Home Loan",
@@ -33,7 +31,6 @@ const TestimonialsSlider = () => {
       name: "Amit Patel",
       role: "Doctor",
       location: "Ahmedabad",
-      avatar: "AP",
       rating: 5,
       quote: "Exceptional service! The RM assigned to me was knowledgeable and helped me get a better rate than what I was offered elsewhere.",
       loanType: "Personal Loan",
@@ -45,7 +42,6 @@ const TestimonialsSlider = () => {
       name: "Sneha Reddy",
       role: "Entrepreneur",
       location: "Hyderabad",
-      avatar: "SR",
       rating: 5,
       quote: "Comparing multiple banks in one place saved me hours of research. The cashback offer was a pleasant bonus!",
       loanType: "Loan Against Property",
@@ -57,7 +53,6 @@ const TestimonialsSlider = () => {
       name: "Vikram Singh",
       role: "Government Employee",
       location: "Delhi",
-      avatar: "VS",
       rating: 5,
       quote: "Simple, fast, and reliable. The document upload process was smooth, and I received my loan within a week.",
       loanType: "Personal Loan",
@@ -66,7 +61,6 @@ const TestimonialsSlider = () => {
     },
   ];
 
-  // Format items for CircularGallery
   const galleryItems = testimonials.map((t) => ({
     image: t.image,
     quote: t.quote,
@@ -78,7 +72,13 @@ const TestimonialsSlider = () => {
     <section className="py-20 md:py-28 section-gradient overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
           <span className="inline-block text-xs font-medium text-primary uppercase tracking-widest mb-4">
             Testimonials
           </span>
@@ -88,10 +88,16 @@ const TestimonialsSlider = () => {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             See what our customers have to say about their experience with PRYME
           </p>
-        </div>
+        </motion.div>
 
         {/* Circular Gallery */}
-        <div className="h-[400px] md:h-[500px] w-full max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="h-[400px] md:h-[500px] w-full max-w-6xl mx-auto"
+        >
           <CircularGallery
             items={galleryItems}
             bend={3}
@@ -100,10 +106,16 @@ const TestimonialsSlider = () => {
             scrollSpeed={2}
             scrollEase={0.05}
           />
-        </div>
+        </motion.div>
 
         {/* Trust indicators */}
-        <div className="flex items-center justify-center gap-8 mt-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="flex items-center justify-center gap-8 mt-12"
+        >
           <div className="flex items-center gap-2">
             <div className="flex">
               {[...Array(5)].map((_, i) => (
@@ -120,7 +132,7 @@ const TestimonialsSlider = () => {
           <div className="text-sm text-muted-foreground hidden sm:block">
             <span className="font-semibold text-foreground">₹500Cr+</span> Loans Disbursed
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

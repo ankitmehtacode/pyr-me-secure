@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Wallet, Briefcase, Home, Building2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 const ProductSelectorGrid = () => {
   const products = [
@@ -11,7 +11,6 @@ const ProductSelectorGrid = () => {
       rate: "10.5%",
       maxAmount: "₹40 Lakh",
       tenure: "Up to 5 Years",
-      color: "from-emerald-500/10 to-emerald-500/5",
       href: "/apply?type=personal",
     },
     {
@@ -21,7 +20,6 @@ const ProductSelectorGrid = () => {
       rate: "12%",
       maxAmount: "₹2 Crore",
       tenure: "Up to 7 Years",
-      color: "from-blue-500/10 to-blue-500/5",
       href: "/apply?type=business",
     },
     {
@@ -31,7 +29,6 @@ const ProductSelectorGrid = () => {
       rate: "8.5%",
       maxAmount: "₹5 Crore",
       tenure: "Up to 30 Years",
-      color: "from-violet-500/10 to-violet-500/5",
       href: "/apply?type=home",
     },
     {
@@ -41,16 +38,36 @@ const ProductSelectorGrid = () => {
       rate: "9.5%",
       maxAmount: "₹3 Crore",
       tenure: "Up to 15 Years",
-      color: "from-amber-500/10 to-amber-500/5",
       href: "/apply?type=lap",
     },
   ];
+
+  const containerVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.12 } },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50, scale: 0.96 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+    },
+  };
 
   return (
     <section className="py-20 md:py-28">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
           <span className="inline-block text-xs font-medium text-primary uppercase tracking-widest mb-4">
             Loan Products
           </span>
@@ -60,58 +77,68 @@ const ProductSelectorGrid = () => {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Choose from our range of loan products designed to meet your unique requirements
           </p>
-        </div>
+        </motion.div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {products.map((product, index) => (
-            <Link
-              key={product.title}
-              to={product.href}
-              className="group bg-card rounded-xl border border-border/50 p-6 md:p-8 overflow-hidden relative transition-all duration-300 hover:scale-[1.02] hover:border-primary hover:shadow-elevated-lg"
-            >
-              {/* Background Gradient */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${product.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-              
-              <div className="relative">
-                {/* Icon - Increased container size */}
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-300">
-                  <product.icon className="w-7 h-7 text-primary" strokeWidth={2} />
-                </div>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto"
+        >
+          {products.map((product) => (
+            <motion.div key={product.title} variants={cardVariants}>
+              <Link
+                to={product.href}
+                className="group block bg-card rounded-xl border border-border/50 p-6 md:p-8 overflow-hidden relative transition-all duration-300 hover:border-primary hover:shadow-elevated-lg"
+              >
+                {/* Background shimmer on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                {/* Content */}
-                <h3 className="text-xl font-semibold text-foreground mb-2">{product.title}</h3>
-                <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-                  {product.description}
-                </p>
+                <div className="relative">
+                  {/* Icon */}
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-300"
+                  >
+                    <product.icon className="w-7 h-7 text-primary" strokeWidth={2} />
+                  </motion.div>
 
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-muted/30 rounded-xl">
-                  <div>
-                    <span className="text-xs text-muted-foreground block mb-1">Rate from</span>
-                    <p className="text-lg font-bold text-primary">{product.rate}</p>
+                  {/* Content */}
+                  <h3 className="text-xl font-semibold text-foreground mb-2">{product.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+                    {product.description}
+                  </p>
+
+                  {/* Stats */}
+                  <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-muted/30 rounded-xl">
+                    <div>
+                      <span className="text-xs text-muted-foreground block mb-1">Rate from</span>
+                      <p className="text-lg font-bold text-primary">{product.rate}</p>
+                    </div>
+                    <div>
+                      <span className="text-xs text-muted-foreground block mb-1">Up to</span>
+                      <p className="text-lg font-bold text-foreground">{product.maxAmount}</p>
+                    </div>
+                    <div>
+                      <span className="text-xs text-muted-foreground block mb-1">Tenure</span>
+                      <p className="text-sm font-semibold text-foreground">{product.tenure}</p>
+                    </div>
                   </div>
-                  <div>
-                    <span className="text-xs text-muted-foreground block mb-1">Up to</span>
-                    <p className="text-lg font-bold text-foreground">{product.maxAmount}</p>
-                  </div>
-                  <div>
-                    <span className="text-xs text-muted-foreground block mb-1">Tenure</span>
-                    <p className="text-sm font-semibold text-foreground">{product.tenure}</p>
+
+                  {/* CTA */}
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-primary/30 text-sm font-semibold text-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300">
+                      Apply Now
+                      <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                    </span>
                   </div>
                 </div>
-
-                {/* CTA - Ghost button style with chevron */}
-                <div className="flex items-center justify-between">
-                  <button className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-primary/30 text-sm font-medium text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-                    Apply Now
-                    <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                  </button>
-                </div>
-              </div>
-            </Link>
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
