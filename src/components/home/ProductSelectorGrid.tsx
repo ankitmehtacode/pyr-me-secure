@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Wallet, Briefcase, Home, Building2 } from "lucide-react";
 import { motion } from "framer-motion";
+import TiltedCard from "./TiltedCard";
 
 const ProductSelectorGrid = () => {
   const products = [
@@ -89,53 +90,48 @@ const ProductSelectorGrid = () => {
         >
           {products.map((product) => (
             <motion.div key={product.title} variants={cardVariants}>
-              <Link
-                to={product.href}
-                className="group block bg-card rounded-xl border border-border/50 p-6 md:p-8 overflow-hidden relative transition-all duration-300 hover:border-primary hover:shadow-elevated-lg"
-              >
-                {/* Background shimmer on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <TiltedCard className="rounded-xl">
+                <Link
+                  to={product.href}
+                  className="group block bg-card rounded-xl border border-border/50 p-6 md:p-8 overflow-hidden relative transition-all duration-300 hover:border-primary hover:shadow-elevated-lg"
+                >
+                  {/* Background shimmer on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="relative">
-                  {/* Icon */}
-                  <motion.div
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-300"
-                  >
-                    <product.icon className="w-7 h-7 text-primary" strokeWidth={2} />
-                  </motion.div>
-
-                  {/* Content */}
-                  <h3 className="text-xl font-semibold text-foreground mb-2">{product.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-                    {product.description}
-                  </p>
-
-                  {/* Stats */}
-                  <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-muted/30 rounded-xl">
-                    <div>
-                      <span className="text-xs text-muted-foreground block mb-1">Rate from</span>
-                      <p className="text-lg font-bold text-primary">{product.rate}</p>
+                  <div className="relative">
+                    <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-300">
+                      <product.icon className="w-7 h-7 text-primary" strokeWidth={2} />
                     </div>
-                    <div>
-                      <span className="text-xs text-muted-foreground block mb-1">Up to</span>
-                      <p className="text-lg font-bold text-foreground">{product.maxAmount}</p>
+
+                    <h3 className="text-xl font-semibold text-foreground mb-2">{product.title}</h3>
+                    <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+                      {product.description}
+                    </p>
+
+                    <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-muted/30 rounded-xl">
+                      <div>
+                        <span className="text-xs text-muted-foreground block mb-1">Rate from</span>
+                        <p className="text-lg font-bold text-primary">{product.rate}</p>
+                      </div>
+                      <div>
+                        <span className="text-xs text-muted-foreground block mb-1">Up to</span>
+                        <p className="text-lg font-bold text-foreground">{product.maxAmount}</p>
+                      </div>
+                      <div>
+                        <span className="text-xs text-muted-foreground block mb-1">Tenure</span>
+                        <p className="text-sm font-semibold text-foreground">{product.tenure}</p>
+                      </div>
                     </div>
-                    <div>
-                      <span className="text-xs text-muted-foreground block mb-1">Tenure</span>
-                      <p className="text-sm font-semibold text-foreground">{product.tenure}</p>
+
+                    <div className="flex items-center justify-between">
+                      <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-primary/30 text-sm font-semibold text-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300">
+                        Apply Now
+                        <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                      </span>
                     </div>
                   </div>
-
-                  {/* CTA */}
-                  <div className="flex items-center justify-between">
-                    <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-primary/30 text-sm font-semibold text-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300">
-                      Apply Now
-                      <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
+                </Link>
+              </TiltedCard>
             </motion.div>
           ))}
         </motion.div>
