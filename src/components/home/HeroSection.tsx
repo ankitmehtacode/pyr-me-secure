@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Shield, Clock, CheckCircle, TrendingUp, Star, Zap, Gift } from "lucide-react";
 import { motion } from "framer-motion";
 import SmartInput from "./SmartInput";
+import DecryptText from "./DecryptText";
 
 const CountUp = ({ target, suffix = "" }: { target: number; suffix?: string }) => {
   const [count, setCount] = useState(0);
@@ -129,16 +130,15 @@ const HeroSection = () => {
           </motion.div>
 
           {/* Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.25 }}
+          <h1
             className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground mb-6"
             style={{ letterSpacing: '-0.02em', lineHeight: '1.1' }}
           >
-            Smart Loans.{" "}
-            <span className="text-gradient">Better Rates.</span>
-          </motion.h1>
+            <DecryptText text="Smart Loans." delay={300} />{" "}
+            <span className="text-gradient">
+              <DecryptText text="Better Rates." delay={600} />
+            </span>
+          </h1>
 
           {/* Subtitle */}
           <motion.p
