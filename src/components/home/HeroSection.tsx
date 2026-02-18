@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight, Shield, Clock, CheckCircle, TrendingUp, Star, Zap, Gift } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Shield, Clock, CheckCircle, TrendingUp, Star, Zap, Gift } from "lucide-react";
 import { motion } from "framer-motion";
+import SmartInput from "./SmartInput";
 
 const CountUp = ({ target, suffix = "" }: { target: number; suffix?: string }) => {
   const [count, setCount] = useState(0);
@@ -152,35 +151,10 @@ const HeroSection = () => {
             Transparent. Secure. Fast.
           </motion.p>
 
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.55 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
-          >
-            <Button
-              asChild
-              variant="primary"
-              size="xl"
-              className="w-full sm:w-auto"
-            >
-              <Link to="/apply">
-                Check Eligibility
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="xl"
-              className="w-full sm:w-auto"
-            >
-              <Link to="/apply#emi-calculator">
-                Calculate EMI
-              </Link>
-            </Button>
-          </motion.div>
+          {/* Smart Search Input */}
+          <div className="mb-16">
+            <SmartInput />
+          </div>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 max-w-3xl mx-auto">
