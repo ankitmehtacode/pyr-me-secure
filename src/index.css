@@ -210,6 +210,47 @@
     );
   }
 
+  /* Aurora Gradient - Slowly shifting background for hero */
+  .aurora-gradient {
+    background: linear-gradient(
+      -45deg,
+      hsl(148 62% 42% / 0.07),
+      hsl(217 91% 60% / 0.05),
+      hsl(50 100% 50% / 0.04),
+      hsl(148 62% 55% / 0.06),
+      hsl(var(--background))
+    );
+    background-size: 400% 400%;
+    animation: aurora-shift 15s ease-in-out infinite;
+  }
+
+  @keyframes aurora-shift {
+    0%, 100% { background-position: 0% 50%; }
+    25% { background-position: 100% 0%; }
+    50% { background-position: 100% 100%; }
+    75% { background-position: 0% 100%; }
+  }
+
+  /* Aurora text clip - reveals gradient beneath text */
+  .text-aurora-clip {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      135deg,
+      hsl(148 62% 42%) 0%,
+      hsl(148 62% 55%) 25%,
+      hsl(217 91% 60%) 50%,
+      hsl(50 100% 50%) 75%,
+      hsl(148 62% 42%) 100%
+    );
+    background-size: 200% auto;
+    animation: aurora-text 6s ease-in-out infinite;
+  }
+
+  @keyframes aurora-text {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 200% center; }
+  }
+
   /* Section Gradient */
   .section-gradient {
     background: linear-gradient(
