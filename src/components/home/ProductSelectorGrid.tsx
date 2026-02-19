@@ -13,6 +13,7 @@ const ProductSelectorGrid = () => {
       maxAmount: "₹40 Lakh",
       tenure: "Up to 5 Years",
       href: "/apply?type=personal",
+      accent: "148 62% 42%",
     },
     {
       icon: Briefcase,
@@ -22,6 +23,7 @@ const ProductSelectorGrid = () => {
       maxAmount: "₹2 Crore",
       tenure: "Up to 7 Years",
       href: "/apply?type=business",
+      accent: "217 91% 60%",
     },
     {
       icon: Home,
@@ -31,6 +33,7 @@ const ProductSelectorGrid = () => {
       maxAmount: "₹5 Crore",
       tenure: "Up to 30 Years",
       href: "/apply?type=home",
+      accent: "50 100% 50%",
     },
     {
       icon: Building2,
@@ -40,23 +43,11 @@ const ProductSelectorGrid = () => {
       maxAmount: "₹3 Crore",
       tenure: "Up to 15 Years",
       href: "/apply?type=lap",
+      accent: "280 70% 60%",
     },
   ];
 
-  const containerVariants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.12 } },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50, scale: 0.96 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
-    },
-  };
+  const springConfig = { stiffness: 120, damping: 28, mass: 0.8 };
 
   return (
     <section className="py-20 md:py-28">
@@ -66,13 +57,16 @@ const ProductSelectorGrid = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ type: "spring", ...springConfig }}
           className="text-center mb-16"
         >
-          <span className="inline-block text-xs font-medium text-primary uppercase tracking-widest mb-4">
+          <span className="inline-block text-xs font-medium text-primary uppercase tracking-[0.2em] mb-4">
             Loan Products
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+          <h2
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4"
+            style={{ letterSpacing: "-0.03em", lineHeight: "1.1" }}
+          >
             Financial Solutions for Every Need
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -80,53 +74,100 @@ const ProductSelectorGrid = () => {
           </p>
         </motion.div>
 
-        {/* Products Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto"
-        >
-          {products.map((product) => (
-            <motion.div key={product.title} variants={cardVariants}>
-              <TiltedCard className="rounded-xl">
+        {/* Products Grid — overlapping fan-out on hover row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-5xl mx-auto">
+          {products.map((product, index) => (
+            <motion.div
+              key={product.title}
+              initial={{ opacity: 0, y: 50, rotateX: 4 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{
+                type: "spring",
+                ...springConfig,
+                delay: index * 0.08,
+              }}
+              style={{ perspective: "1200px" }}
+            >
+              <TiltedCard className="rounded-2xl" tiltStrength={6} glareOpacity={0.15}>
                 <Link
                   to={product.href}
-                  className="group block bg-card rounded-xl border border-border/50 p-6 md:p-8 overflow-hidden relative transition-all duration-300 hover:border-primary hover:shadow-elevated-lg"
+                  className="group block relative bg-card/70 backdrop-blur-sm rounded-2xl border border-border/40 p-7 md:p-8 overflow-hidden transition-all duration-500 hover:border-transparent hover:shadow-[0_20px_60px_-15px_hsl(var(--foreground)/0.08)]"
                 >
-                  {/* Background shimmer on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  {/* Ambient edge glow on hover */}
+                  <div
+                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                    style={{
+                      background: `radial-gradient(ellipse at 30% 0%, hsl(${product.accent} / 0.08), transparent 60%)`,
+                    }}
+                  />
+
+                  {/* Top edge shimmer line */}
+                  <div
+                    className="absolute top-0 left-[10%] right-[10%] h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{
+                      background: `linear-gradient(90deg, transparent, hsl(${product.accent} / 0.5), transparent)`,
+                    }}
+                  />
 
                   <div className="relative">
-                    <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-300">
-                      <product.icon className="w-7 h-7 text-primary" strokeWidth={2} />
+                    {/* Icon */}
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-105"
+                      style={{
+                        background: `hsl(${product.accent} / 0.08)`,
+                      }}
+                    >
+                      <product.icon
+                        className="w-6 h-6 transition-colors duration-300"
+                        style={{ color: `hsl(${product.accent})` }}
+                        strokeWidth={1.8}
+                      />
                     </div>
 
-                    <h3 className="text-xl font-semibold text-foreground mb-2">{product.title}</h3>
+                    <h3
+                      className="text-xl font-semibold text-foreground mb-2"
+                      style={{ letterSpacing: "-0.02em" }}
+                    >
+                      {product.title}
+                    </h3>
                     <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
                       {product.description}
                     </p>
 
-                    <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-muted/30 rounded-xl">
+                    {/* Stats row with holographic rate */}
+                    <div className="grid grid-cols-3 gap-3 mb-6 p-4 bg-muted/20 rounded-xl border border-border/30">
                       <div>
-                        <span className="text-xs text-muted-foreground block mb-1">Rate from</span>
-                        <p className="text-lg font-bold text-primary">{product.rate}</p>
+                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider block mb-1.5">
+                          Rate from
+                        </span>
+                        <p className="text-xl font-bold holographic-text leading-none">
+                          {product.rate}
+                        </p>
                       </div>
                       <div>
-                        <span className="text-xs text-muted-foreground block mb-1">Up to</span>
-                        <p className="text-lg font-bold text-foreground">{product.maxAmount}</p>
+                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider block mb-1.5">
+                          Up to
+                        </span>
+                        <p className="text-lg font-bold text-foreground leading-none">
+                          {product.maxAmount}
+                        </p>
                       </div>
                       <div>
-                        <span className="text-xs text-muted-foreground block mb-1">Tenure</span>
-                        <p className="text-sm font-semibold text-foreground">{product.tenure}</p>
+                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider block mb-1.5">
+                          Tenure
+                        </span>
+                        <p className="text-sm font-semibold text-foreground leading-none mt-0.5">
+                          {product.tenure}
+                        </p>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between">
-                      <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-primary/30 text-sm font-semibold text-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300">
+                    {/* CTA */}
+                    <div className="flex items-center">
+                      <span className="inline-flex items-center gap-2 text-sm font-semibold text-primary group-hover:gap-3 transition-all duration-300">
                         Apply Now
-                        <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                        <ArrowRight className="w-4 h-4" />
                       </span>
                     </div>
                   </div>
@@ -134,7 +175,7 @@ const ProductSelectorGrid = () => {
               </TiltedCard>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
