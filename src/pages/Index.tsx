@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
+import SmoothScroll from "@/components/SmoothScroll";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
 import PartnerBankMarquee from "@/components/home/PartnerBankMarquee";
@@ -24,18 +25,20 @@ const Index = () => {
         <link rel="canonical" href="https://pryme.in" />
       </Helmet>
 
-      <div className="min-h-screen flex flex-col bg-background">
-        <Header />
-        <main className="flex-1">
-          <HeroSection />
-          <PartnerBankMarquee />
-          <ProductSelectorGrid />
-          <ProcessSection />
-          <TrustMonologue />
-          <TestimonialsSlider />
-        </main>
-        <Footer />
-      </div>
+      <SmoothScroll>
+        <div className="min-h-screen flex flex-col bg-background">
+          <Header />
+          <main className="flex-1">
+            <HeroSection />
+            <PartnerBankMarquee />
+            <ProductSelectorGrid />
+            <ProcessSection />
+            <TrustMonologue />
+            <TestimonialsSlider />
+          </main>
+          <Footer />
+        </div>
+      </SmoothScroll>
     </>
   );
 };
