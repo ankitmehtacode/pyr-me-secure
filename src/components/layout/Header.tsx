@@ -94,7 +94,7 @@ const Header = () => {
             <img 
               src={prymeLogo} 
               alt="PRYME" 
-              className="h-8 md:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              className="h-8 md:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-105 mix-blend-multiply"
             />
           </Link>
 
