@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Wallet, Briefcase, Home, Building2 } from "lucide-react";
 import { motion } from "framer-motion";
 import TiltedCard from "./TiltedCard";
+import productsIllustration from "@/assets/products-illustration.png";
 
 const ProductSelectorGrid = () => {
   const products = [
@@ -52,13 +53,13 @@ const ProductSelectorGrid = () => {
   return (
     <section className="py-20 md:py-28">
       <div className="container mx-auto px-4">
-        {/* Header */}
+        {/* Header with floating illustration */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ type: "spring", ...springConfig }}
-          className="text-center mb-16"
+          className="text-center mb-8"
         >
           <span className="inline-block text-xs font-medium text-primary uppercase tracking-[0.2em] mb-4">
             Loan Products
@@ -74,7 +75,23 @@ const ProductSelectorGrid = () => {
           </p>
         </motion.div>
 
-        {/* Products Grid — overlapping fan-out on hover row */}
+        {/* Floating products illustration */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-3xl mx-auto mb-12"
+        >
+          <img
+            src={productsIllustration}
+            alt="Loan product categories - Personal, Business, Home, Commercial"
+            className="w-full h-auto object-contain mix-blend-multiply dark:mix-blend-screen dark:opacity-80"
+            loading="lazy"
+          />
+        </motion.div>
+
+        {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-5xl mx-auto">
           {products.map((product, index) => (
             <motion.div

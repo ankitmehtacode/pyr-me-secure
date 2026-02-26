@@ -8,6 +8,7 @@ import ProductSelectorGrid from "@/components/home/ProductSelectorGrid";
 import TrustMonologue from "@/components/home/TrustMonologue";
 import ProcessSection from "@/components/home/ProcessSection";
 import TestimonialsSlider from "@/components/home/TestimonialsSlider";
+import CTASection from "@/components/home/CTASection";
 
 const Index = () => {
   return (
@@ -35,6 +36,7 @@ const Index = () => {
             <ProcessSection />
             <TrustMonologue />
             <TestimonialsSlider />
+            <CTASection />
           </main>
           <Footer />
         </div>
