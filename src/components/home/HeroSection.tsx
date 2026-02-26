@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
 import SmartInput from "./SmartInput";
-import prymeLogo from "@/assets/pryme-logo.png";
+import PrymeLogo from "@/components/PrymeLogo";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -39,7 +39,7 @@ CountUp.displayName = "CountUp";
 
 const HeroSection = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const heroLogoRef = useRef<HTMLImageElement>(null);
+  const heroLogoRef = useRef<SVGSVGElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
@@ -204,11 +204,10 @@ const HeroSection = memo(() => {
 
           {/* Hero logo - starts large, docks to header on scroll */}
           <div className="flex justify-center mb-8" style={{ perspective: "1000px" }}>
-            <img
-              ref={heroLogoRef}
-              src={prymeLogo}
-              alt="PRYME"
-              className="h-20 md:h-28 w-auto object-contain will-change-transform mix-blend-multiply"
+            <PrymeLogo
+              ref={heroLogoRef as any}
+              showText={false}
+              className="h-20 md:h-28 w-auto text-foreground will-change-transform"
               style={{ transformStyle: "preserve-3d" }}
             />
           </div>

@@ -20,7 +20,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import prymeLogo from "@/assets/pryme-logo.png";
+import PrymeLogo from "@/components/PrymeLogo";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -167,7 +167,7 @@ MobileMenu.displayName = "MobileMenu";
 const Header = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-  const logoRef = useRef<HTMLImageElement>(null);
+  const logoRef = useRef<SVGSVGElement>(null);
   const noiseRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -265,11 +265,9 @@ const Header = memo(() => {
           <div className="flex items-center justify-between h-16 md:h-18">
             {/* Logo */}
             <Link to="/" className="flex items-center group" style={{ perspective: "600px" }}>
-              <img
-                ref={logoRef}
-                src={prymeLogo}
-                alt="PRYME"
-                className="h-11 md:h-12 w-auto object-contain will-change-transform mix-blend-multiply"
+              <PrymeLogo
+                ref={logoRef as any}
+                className="h-10 md:h-11 w-auto text-foreground will-change-transform"
                 style={{ transformStyle: "preserve-3d" }}
               />
             </Link>
