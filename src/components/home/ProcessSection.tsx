@@ -1,5 +1,6 @@
 import { FileText, Search, CheckCircle, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
+import processBg from "@/assets/process-bg.jpg";
 
 const springConfig = { stiffness: 120, damping: 28, mass: 0.8 };
 
@@ -32,8 +33,21 @@ const ProcessSection = () => {
   ];
 
   return (
-    <section className="py-20 md:py-28 trust-gradient">
-      <div className="container mx-auto px-4">
+    <section className="relative py-20 md:py-28 overflow-hidden">
+      {/* Background image with overlay */}
+      <div className="absolute inset-0">
+        <img
+          src={processBg}
+          alt=""
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-background/92 dark:bg-background/95" />
+        {/* Subtle gradient overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+      </div>
+
+      <div className="container relative mx-auto px-4">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -81,7 +95,7 @@ const ProcessSection = () => {
 
                 <motion.div
                   whileHover={{ y: -3, transition: { type: "spring", stiffness: 300, damping: 20 } }}
-                  className="relative bg-card/70 backdrop-blur-sm rounded-2xl border border-border/40 p-6 text-center group transition-all duration-300 hover:border-primary/20 hover:shadow-[0_12px_40px_-15px_hsl(148_62%_42%/0.12)]"
+                  className="relative bg-card/80 backdrop-blur-md rounded-2xl border border-border/40 p-6 text-center group transition-all duration-300 hover:border-primary/20 hover:shadow-[0_12px_40px_-15px_hsl(148_62%_42%/0.12)]"
                 >
                   {/* Step Number */}
                   <div
