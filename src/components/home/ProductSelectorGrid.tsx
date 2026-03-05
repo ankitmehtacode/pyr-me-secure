@@ -11,7 +11,7 @@ import cardEducation from "@/assets/card-education.png";
 const products = [
   {
     id: "personal",
-    label: "Personal Wallet",
+    label: "Personal",
     image: cardPersonal,
     title: "Personal Loan",
     description: "Quick disbursement for your personal needs with flexible EMIs.",
@@ -37,7 +37,7 @@ const products = [
   },
   {
     id: "home",
-    label: "Dream",
+    label: "Home Loan",
     image: cardHome,
     title: "Home Loan",
     description: "Make your dream home a reality with industry-best rates.",
@@ -50,7 +50,7 @@ const products = [
   },
   {
     id: "education",
-    label: "Commercial",
+    label: "Education",
     image: cardEducation,
     title: "Education Loan",
     description: "Invest in your future with affordable education financing.",
