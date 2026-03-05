@@ -50,7 +50,7 @@ const products = [
   },
   {
     id: "education",
-    label: "Commercial",
+    label: "Education",
     image: cardEducation,
     title: "Education Loan",
     description: "Invest in your future with affordable education financing.",
