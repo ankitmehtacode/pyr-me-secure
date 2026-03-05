@@ -11,7 +11,7 @@ import cardEducation from "@/assets/card-education.png";
 const products = [
   {
     id: "personal",
-    label: "Personal Wallet",
+    label: "Personal",
     image: cardPersonal,
     title: "Personal Loan",
     description: "Quick disbursement for your personal needs with flexible EMIs.",
