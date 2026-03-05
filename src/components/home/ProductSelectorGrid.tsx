@@ -37,7 +37,7 @@ const products = [
   },
   {
     id: "home",
-    label: "Dream",
+    label: "Home Loan",
     image: cardHome,
     title: "Home Loan",
     description: "Make your dream home a reality with industry-best rates.",
