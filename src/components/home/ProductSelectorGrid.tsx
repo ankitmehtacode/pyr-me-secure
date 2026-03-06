@@ -1,4 +1,4 @@
-import { useState, memo } from "react";
+import { useState, memo, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -63,22 +63,36 @@ const products = [
   },
 ];
 
-const springConfig = { stiffness: 120, damping: 28, mass: 0.8 };
+const spring = { type: "spring" as const, stiffness: 140, damping: 22, mass: 0.7 };
 
 const ProductSelectorGrid = memo(() => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selected = products.find((p) => p.id === selectedId);
+  const selectedIndex = products.findIndex((p) => p.id === selectedId);
+  const rowRef = useRef<HTMLDivElement>(null);
+
+  // Scroll selected card to center on mobile
+  useEffect(() => {
+    if (selectedId && rowRef.current) {
+      const container = rowRef.current;
+      const card = container.children[selectedIndex] as HTMLElement;
+      if (card) {
+        const scrollLeft = card.offsetLeft - container.offsetWidth / 2 + card.offsetWidth / 2;
+        container.scrollTo({ left: scrollLeft, behavior: "smooth" });
+      }
+    }
+  }, [selectedId, selectedIndex]);
 
   return (
-    <section className="py-20 md:py-28">
+    <section className="py-20 md:py-28 overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ type: "spring", ...springConfig }}
-          className="text-center mb-10"
+          transition={spring}
+          className="text-center mb-12"
         >
           <span className="inline-block text-xs font-medium text-primary uppercase tracking-[0.2em] mb-4">
             Loan Products
@@ -94,66 +108,118 @@ const ProductSelectorGrid = memo(() => {
           </p>
         </motion.div>
 
-        {/* Isometric Card Buttons */}
-        <div className="flex justify-center items-end gap-0 md:gap-0 max-w-4xl mx-auto mb-8 -mx-2 overflow-x-auto px-2">
+        {/* Card Row */}
+        <div
+          ref={rowRef}
+          className="flex justify-center items-end gap-4 md:gap-6 max-w-5xl mx-auto mb-10 overflow-x-auto px-4 pb-4 scrollbar-hide snap-x snap-mandatory"
+          style={{ scrollbarWidth: "none" }}
+        >
           {products.map((product, index) => {
             const isActive = selectedId === product.id;
+            const hasSelection = selectedId !== null;
+            const isInactive = hasSelection && !isActive;
+
             return (
               <motion.button
                 key={product.id}
                 onClick={() => setSelectedId(isActive ? null : product.id)}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ type: "spring", ...springConfig, delay: index * 0.1 }}
-                whileHover={{ y: -12, scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-                className={`relative flex flex-col items-center cursor-pointer group transition-all duration-300 px-2 md:px-4 ${
-                  isActive ? "z-10" : "z-0"
-                }`}
-                style={{ perspective: "800px" }}
+                transition={{ ...spring, delay: index * 0.08 }}
+                className="relative flex flex-col items-center cursor-pointer group snap-center shrink-0"
+                style={{ perspective: "1000px" }}
+                layout
               >
-                {/* Card image */}
                 <motion.div
-                  className="relative w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-2xl overflow-hidden"
-                  style={{
-                    transformStyle: "preserve-3d",
-                    transform: `rotateY(${index % 2 === 0 ? -5 : 5}deg) rotateX(3deg)`,
-                  }}
+                  className="relative rounded-2xl overflow-hidden"
                   animate={{
-                    boxShadow: isActive
-                      ? `0 20px 50px -10px hsl(${product.accent} / 0.4)`
-                      : "0 10px 30px -10px hsl(var(--foreground) / 0.1)",
-                    scale: isActive ? 1.08 : 1,
+                    width: isActive ? 200 : isInactive ? 120 : 160,
+                    height: isActive ? 200 : isInactive ? 120 : 160,
+                    filter: isInactive ? "blur(3px) brightness(0.6)" : "blur(0px) brightness(1)",
+                    opacity: isInactive ? 0.5 : 1,
+                    y: isActive ? -16 : 0,
+                    rotateY: isActive ? 0 : index % 2 === 0 ? -6 : 6,
+                    rotateX: isActive ? 0 : 4,
+                    scale: isActive ? 1.1 : isInactive ? 0.9 : 1,
                   }}
-                  transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                  whileHover={!isActive ? { 
+                    scale: isInactive ? 0.95 : 1.06, 
+                    y: -8, 
+                    filter: isInactive ? "blur(1px) brightness(0.8)" : "blur(0px) brightness(1)",
+                    opacity: isInactive ? 0.7 : 1,
+                  } : undefined}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ ...spring, filter: { duration: 0.4 }, opacity: { duration: 0.3 } }}
+                  style={{ transformStyle: "preserve-3d" }}
                 >
                   <img
                     src={product.image}
                     alt={product.label}
                     className="w-full h-full object-cover"
                     loading="lazy"
+                    draggable={false}
                   />
 
-                  {/* Active ring */}
+                  {/* Active glow ring */}
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 1.1 }}
+                        transition={spring}
+                        className="absolute inset-0 rounded-2xl pointer-events-none"
+                        style={{
+                          border: `2px solid hsl(${product.accent})`,
+                          boxShadow: `0 0 30px -5px hsl(${product.accent} / 0.5), inset 0 0 20px -10px hsl(${product.accent} / 0.2)`,
+                        }}
+                      />
+                    )}
+                  </AnimatePresence>
+
+                  {/* Subtle shimmer on active */}
                   {isActive && (
                     <motion.div
-                      layoutId="card-ring"
-                      className="absolute inset-0 rounded-2xl border-2 pointer-events-none"
-                      style={{ borderColor: `hsl(${product.accent})` }}
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      className="absolute inset-0 pointer-events-none"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 0.15 }}
+                      style={{
+                        background: `linear-gradient(135deg, transparent 40%, hsl(${product.accent} / 0.6) 50%, transparent 60%)`,
+                        backgroundSize: "200% 200%",
+                      }}
                     />
                   )}
                 </motion.div>
 
                 {/* Label */}
-                <span
-                  className={`mt-3 text-xs sm:text-sm font-semibold transition-colors duration-300 ${
+                <motion.span
+                  animate={{
+                    opacity: isInactive ? 0.35 : 1,
+                    scale: isActive ? 1.1 : isInactive ? 0.9 : 1,
+                    y: isActive ? -8 : 0,
+                  }}
+                  transition={spring}
+                  className={`mt-4 text-xs sm:text-sm font-semibold transition-colors duration-300 ${
                     isActive ? "text-foreground" : "text-muted-foreground"
                   }`}
                 >
                   {product.label}
-                </span>
+                </motion.span>
+
+                {/* Active dot indicator */}
+                <AnimatePresence>
+                  {isActive && (
+                    <motion.div
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={spring}
+                      className="w-1.5 h-1.5 rounded-full mt-2"
+                      style={{ background: `hsl(${product.accent})` }}
+                    />
+                  )}
+                </AnimatePresence>
               </motion.button>
             );
           })}
@@ -164,23 +230,21 @@ const ProductSelectorGrid = memo(() => {
           {selected && (
             <motion.div
               key={selected.id}
-              initial={{ opacity: 0, y: 30, scale: 0.97 }}
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 200, damping: 28 }}
+              exit={{ opacity: 0, y: -30, scale: 0.95 }}
+              transition={{ ...spring, opacity: { duration: 0.25 } }}
               className="max-w-3xl mx-auto"
             >
-              <div
-                className="relative rounded-3xl border border-border/40 bg-card/80 backdrop-blur-md overflow-hidden"
-              >
+              <div className="relative rounded-3xl border border-border/40 bg-card/80 backdrop-blur-md overflow-hidden">
                 {/* Accent glow */}
                 <div
-                  className="absolute inset-0 opacity-[0.04] pointer-events-none"
+                  className="absolute inset-0 opacity-[0.05] pointer-events-none"
                   style={{
                     background: `radial-gradient(ellipse at 20% 0%, hsl(${selected.accent}), transparent 60%)`,
                   }}
                 />
-                {/* Top shimmer */}
+                {/* Top shimmer line */}
                 <div
                   className="absolute top-0 left-[10%] right-[10%] h-[1px]"
                   style={{
