@@ -319,9 +319,9 @@ const ProductSelectorGrid = memo(() => {
 
                   <div className="relative p-8 md:p-10">
                     <motion.h3
-                      initial={{ opacity: 0, y: 12 }}
+                      initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.12, ...spring }}
+                      transition={{ delay: 0.04, ...spring }}
                       className="text-2xl md:text-3xl font-bold text-foreground mb-2"
                       style={{ letterSpacing: "-0.02em" }}
                     >
