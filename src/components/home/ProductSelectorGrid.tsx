@@ -235,32 +235,33 @@ const ProductSelectorGrid = memo(() => {
             >
               <motion.div
                 initial={{
-                  rotateX: 90,
-                  rotateY: -15,
+                  rotateY: -65,
+                  rotateX: 6,
                   opacity: 0,
-                  scale: 0.85,
-                  filter: "blur(12px)",
+                  scale: 0.93,
+                  filter: "blur(5px)",
                 }}
                 animate={{
-                  rotateX: 0,
                   rotateY: 0,
+                  rotateX: 0,
                   opacity: 1,
                   scale: 1,
                   filter: "blur(0px)",
                 }}
                 exit={{
-                  rotateX: -90,
-                  rotateY: 15,
+                  rotateY: 65,
+                  rotateX: -6,
                   opacity: 0,
-                  scale: 0.85,
-                  filter: "blur(12px)",
+                  scale: 0.93,
+                  filter: "blur(5px)",
                 }}
                 transition={{
-                  ...spring,
-                  rotateX: { type: "spring", stiffness: 80, damping: 20, mass: 0.9 },
-                  rotateY: { type: "spring", stiffness: 100, damping: 24, mass: 0.7 },
-                  opacity: { duration: 0.35 },
-                  filter: { duration: 0.4 },
+                  type: "spring",
+                  stiffness: 220,
+                  damping: 28,
+                  mass: 0.5,
+                  opacity: { duration: 0.15 },
+                  filter: { duration: 0.15 },
                 }}
                 style={{
                   transformStyle: "preserve-3d",
@@ -319,18 +320,18 @@ const ProductSelectorGrid = memo(() => {
 
                   <div className="relative p-8 md:p-10">
                     <motion.h3
-                      initial={{ opacity: 0, y: 12 }}
+                      initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.12, ...spring }}
+                      transition={{ delay: 0.04, ...spring }}
                       className="text-2xl md:text-3xl font-bold text-foreground mb-2"
                       style={{ letterSpacing: "-0.02em" }}
                     >
                       {selected.title}
                     </motion.h3>
                     <motion.p
-                      initial={{ opacity: 0, y: 8 }}
+                      initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.18, ...spring }}
+                      transition={{ delay: 0.07, ...spring }}
                       className="text-muted-foreground mb-8"
                     >
                       {selected.description}
@@ -338,9 +339,9 @@ const ProductSelectorGrid = memo(() => {
 
                     {/* Stats — glassmorphic inner card */}
                     <motion.div
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.22, ...spring }}
+                      transition={{ delay: 0.1, ...spring }}
                       className="grid grid-cols-3 gap-4 mb-8 p-5 rounded-2xl border border-border/20"
                       style={{
                         background: "hsl(var(--muted) / 0.15)",
@@ -376,7 +377,7 @@ const ProductSelectorGrid = memo(() => {
                           key={feature}
                           initial={{ opacity: 0, x: -12 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.28 + i * 0.06, ...spring }}
+                          transition={{ delay: 0.12 + i * 0.03, ...spring }}
                           className="flex items-center gap-3 text-sm text-muted-foreground"
                         >
                           <span
@@ -392,7 +393,7 @@ const ProductSelectorGrid = memo(() => {
                     <motion.div
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.45, ...spring }}
+                      transition={{ delay: 0.2, ...spring }}
                     >
                       <Link
                         to={selected.href}
