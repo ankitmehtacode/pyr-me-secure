@@ -376,7 +376,7 @@ const ProductSelectorGrid = memo(() => {
                           key={feature}
                           initial={{ opacity: 0, x: -12 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.28 + i * 0.06, ...spring }}
+                          transition={{ delay: 0.12 + i * 0.03, ...spring }}
                           className="flex items-center gap-3 text-sm text-muted-foreground"
                         >
                           <span
