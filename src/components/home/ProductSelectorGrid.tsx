@@ -230,10 +230,10 @@ const ProductSelectorGrid = memo(() => {
           {selected && (
             <motion.div
               key={selected.id}
-              initial={{ opacity: 0, y: 40, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -30, scale: 0.95 }}
-              transition={{ ...spring, opacity: { duration: 0.25 } }}
+              initial={{ opacity: 0, x: -60, scale: 0.92, filter: "blur(8px)" }}
+              animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, x: 60, scale: 0.92, filter: "blur(8px)" }}
+              transition={{ ...spring, opacity: { duration: 0.3 }, filter: { duration: 0.35 } }}
               className="max-w-3xl mx-auto"
             >
               <div className="relative rounded-3xl border border-border/40 bg-card/80 backdrop-blur-md overflow-hidden">
