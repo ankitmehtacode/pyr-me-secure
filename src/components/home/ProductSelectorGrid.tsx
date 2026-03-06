@@ -328,9 +328,9 @@ const ProductSelectorGrid = memo(() => {
                       {selected.title}
                     </motion.h3>
                     <motion.p
-                      initial={{ opacity: 0, y: 8 }}
+                      initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.18, ...spring }}
+                      transition={{ delay: 0.07, ...spring }}
                       className="text-muted-foreground mb-8"
                     >
                       {selected.description}
