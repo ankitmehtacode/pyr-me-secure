@@ -338,9 +338,9 @@ const ProductSelectorGrid = memo(() => {
 
                     {/* Stats — glassmorphic inner card */}
                     <motion.div
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.22, ...spring }}
+                      transition={{ delay: 0.1, ...spring }}
                       className="grid grid-cols-3 gap-4 mb-8 p-5 rounded-2xl border border-border/20"
                       style={{
                         background: "hsl(var(--muted) / 0.15)",
