@@ -235,32 +235,33 @@ const ProductSelectorGrid = memo(() => {
             >
               <motion.div
                 initial={{
-                  rotateX: 90,
-                  rotateY: -15,
+                  rotateY: -65,
+                  rotateX: 6,
                   opacity: 0,
-                  scale: 0.85,
-                  filter: "blur(12px)",
+                  scale: 0.93,
+                  filter: "blur(5px)",
                 }}
                 animate={{
-                  rotateX: 0,
                   rotateY: 0,
+                  rotateX: 0,
                   opacity: 1,
                   scale: 1,
                   filter: "blur(0px)",
                 }}
                 exit={{
-                  rotateX: -90,
-                  rotateY: 15,
+                  rotateY: 65,
+                  rotateX: -6,
                   opacity: 0,
-                  scale: 0.85,
-                  filter: "blur(12px)",
+                  scale: 0.93,
+                  filter: "blur(5px)",
                 }}
                 transition={{
-                  ...spring,
-                  rotateX: { type: "spring", stiffness: 80, damping: 20, mass: 0.9 },
-                  rotateY: { type: "spring", stiffness: 100, damping: 24, mass: 0.7 },
-                  opacity: { duration: 0.35 },
-                  filter: { duration: 0.4 },
+                  type: "spring",
+                  stiffness: 220,
+                  damping: 28,
+                  mass: 0.5,
+                  opacity: { duration: 0.15 },
+                  filter: { duration: 0.15 },
                 }}
                 style={{
                   transformStyle: "preserve-3d",
