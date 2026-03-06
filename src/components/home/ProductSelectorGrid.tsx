@@ -225,94 +225,185 @@ const ProductSelectorGrid = memo(() => {
           })}
         </div>
 
-        {/* Expanded Detail Panel */}
+        {/* Expanded Detail Panel — 3D Rotating Box Reveal */}
         <AnimatePresence mode="wait">
           {selected && (
             <motion.div
               key={selected.id}
-              initial={{ opacity: 0, x: -60, scale: 0.92, filter: "blur(8px)" }}
-              animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
-              exit={{ opacity: 0, x: 60, scale: 0.92, filter: "blur(8px)" }}
-              transition={{ ...spring, opacity: { duration: 0.3 }, filter: { duration: 0.35 } }}
               className="max-w-3xl mx-auto"
+              style={{ perspective: "1200px" }}
             >
-              <div className="relative rounded-3xl border border-border/40 bg-card/80 backdrop-blur-md overflow-hidden">
-                {/* Accent glow */}
+              <motion.div
+                initial={{
+                  rotateX: 90,
+                  rotateY: -15,
+                  opacity: 0,
+                  scale: 0.85,
+                  filter: "blur(12px)",
+                }}
+                animate={{
+                  rotateX: 0,
+                  rotateY: 0,
+                  opacity: 1,
+                  scale: 1,
+                  filter: "blur(0px)",
+                }}
+                exit={{
+                  rotateX: -90,
+                  rotateY: 15,
+                  opacity: 0,
+                  scale: 0.85,
+                  filter: "blur(12px)",
+                }}
+                transition={{
+                  ...spring,
+                  rotateX: { type: "spring", stiffness: 80, damping: 20, mass: 0.9 },
+                  rotateY: { type: "spring", stiffness: 100, damping: 24, mass: 0.7 },
+                  opacity: { duration: 0.35 },
+                  filter: { duration: 0.4 },
+                }}
+                style={{
+                  transformStyle: "preserve-3d",
+                  transformOrigin: "center center",
+                  backfaceVisibility: "hidden",
+                }}
+              >
                 <div
-                  className="absolute inset-0 opacity-[0.05] pointer-events-none"
+                  className="relative overflow-hidden border border-border/30"
                   style={{
-                    background: `radial-gradient(ellipse at 20% 0%, hsl(${selected.accent}), transparent 60%)`,
+                    borderRadius: "24px",
+                    background: "hsl(var(--card) / 0.6)",
+                    backdropFilter: "blur(24px) saturate(180%)",
+                    boxShadow: `
+                      0 2px 0 0 hsl(${selected.accent} / 0.08),
+                      0 8px 30px -8px hsl(var(--background) / 0.5),
+                      0 20px 60px -15px hsl(${selected.accent} / 0.12),
+                      inset 0 1px 0 0 hsl(var(--foreground) / 0.04)
+                    `,
                   }}
-                />
-                {/* Top shimmer line */}
-                <div
-                  className="absolute top-0 left-[10%] right-[10%] h-[1px]"
-                  style={{
-                    background: `linear-gradient(90deg, transparent, hsl(${selected.accent} / 0.5), transparent)`,
-                  }}
-                />
+                >
+                  {/* Accent radial glow */}
+                  <div
+                    className="absolute inset-0 pointer-events-none opacity-[0.06]"
+                    style={{
+                      background: `radial-gradient(ellipse at 15% -10%, hsl(${selected.accent}), transparent 55%)`,
+                    }}
+                  />
 
-                <div className="relative p-8 md:p-10">
-                  <h3
-                    className="text-2xl md:text-3xl font-bold text-foreground mb-2"
-                    style={{ letterSpacing: "-0.02em" }}
-                  >
-                    {selected.title}
-                  </h3>
-                  <p className="text-muted-foreground mb-8">{selected.description}</p>
+                  {/* Top edge highlight */}
+                  <div
+                    className="absolute top-0 left-[8%] right-[8%] h-px pointer-events-none"
+                    style={{
+                      background: `linear-gradient(90deg, transparent, hsl(${selected.accent} / 0.45), transparent)`,
+                    }}
+                  />
 
-                  {/* Stats */}
-                  <div className="grid grid-cols-3 gap-4 mb-8 p-5 bg-muted/20 rounded-2xl border border-border/30">
-                    <div>
-                      <span className="text-[10px] text-muted-foreground uppercase tracking-wider block mb-1.5">
-                        Rate from
-                      </span>
-                      <p className="text-2xl font-bold holographic-text leading-none">{selected.rate}</p>
-                    </div>
-                    <div>
-                      <span className="text-[10px] text-muted-foreground uppercase tracking-wider block mb-1.5">
-                        Up to
-                      </span>
-                      <p className="text-xl font-bold text-foreground leading-none">{selected.maxAmount}</p>
-                    </div>
-                    <div>
-                      <span className="text-[10px] text-muted-foreground uppercase tracking-wider block mb-1.5">
-                        Tenure
-                      </span>
-                      <p className="text-base font-semibold text-foreground leading-none mt-0.5">
-                        {selected.tenure}
-                      </p>
-                    </div>
-                  </div>
+                  {/* Bottom subtle reflection */}
+                  <div
+                    className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
+                    style={{
+                      background: `linear-gradient(90deg, transparent 20%, hsl(var(--foreground) / 0.04) 50%, transparent 80%)`,
+                    }}
+                  />
 
-                  {/* Features */}
-                  <ul className="space-y-3 mb-8">
-                    {selected.features.map((feature, i) => (
-                      <motion.li
-                        key={feature}
-                        initial={{ opacity: 0, x: -12 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.08 }}
-                        className="flex items-center gap-3 text-sm text-muted-foreground"
+                  {/* Glass inner shimmer */}
+                  <motion.div
+                    className="absolute inset-0 pointer-events-none"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3, duration: 0.6 }}
+                    style={{
+                      background: `linear-gradient(135deg, hsl(var(--foreground) / 0.02) 0%, transparent 40%, hsl(${selected.accent} / 0.03) 70%, transparent 100%)`,
+                    }}
+                  />
+
+                  <div className="relative p-8 md:p-10">
+                    <motion.h3
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.12, ...spring }}
+                      className="text-2xl md:text-3xl font-bold text-foreground mb-2"
+                      style={{ letterSpacing: "-0.02em" }}
+                    >
+                      {selected.title}
+                    </motion.h3>
+                    <motion.p
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.18, ...spring }}
+                      className="text-muted-foreground mb-8"
+                    >
+                      {selected.description}
+                    </motion.p>
+
+                    {/* Stats — glassmorphic inner card */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.22, ...spring }}
+                      className="grid grid-cols-3 gap-4 mb-8 p-5 rounded-2xl border border-border/20"
+                      style={{
+                        background: "hsl(var(--muted) / 0.15)",
+                        backdropFilter: "blur(8px)",
+                      }}
+                    >
+                      <div>
+                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider block mb-1.5">
+                          Rate from
+                        </span>
+                        <p className="text-2xl font-bold holographic-text leading-none">{selected.rate}</p>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider block mb-1.5">
+                          Up to
+                        </span>
+                        <p className="text-xl font-bold text-foreground leading-none">{selected.maxAmount}</p>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider block mb-1.5">
+                          Tenure
+                        </span>
+                        <p className="text-base font-semibold text-foreground leading-none mt-0.5">
+                          {selected.tenure}
+                        </p>
+                      </div>
+                    </motion.div>
+
+                    {/* Features */}
+                    <ul className="space-y-3 mb-8">
+                      {selected.features.map((feature, i) => (
+                        <motion.li
+                          key={feature}
+                          initial={{ opacity: 0, x: -12 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.28 + i * 0.06, ...spring }}
+                          className="flex items-center gap-3 text-sm text-muted-foreground"
+                        >
+                          <span
+                            className="w-1.5 h-1.5 rounded-full shrink-0"
+                            style={{ background: `hsl(${selected.accent})` }}
+                          />
+                          {feature}
+                        </motion.li>
+                      ))}
+                    </ul>
+
+                    {/* CTA */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.45, ...spring }}
+                    >
+                      <Link
+                        to={selected.href}
+                        className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-8 py-3 text-sm font-semibold shadow-md hover:shadow-xl hover:brightness-110 hover:scale-[1.03] active:scale-[0.97] transition-all duration-300"
                       >
-                        <span
-                          className="w-1.5 h-1.5 rounded-full shrink-0"
-                          style={{ background: `hsl(${selected.accent})` }}
-                        />
-                        {feature}
-                      </motion.li>
-                    ))}
-                  </ul>
-
-                  {/* CTA */}
-                  <Link
-                    to={selected.href}
-                    className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-8 py-3 text-sm font-semibold shadow-md hover:shadow-xl hover:brightness-110 hover:scale-[1.03] active:scale-[0.97] transition-all duration-300"
-                  >
-                    Apply Now <ArrowRight className="w-4 h-4" />
-                  </Link>
+                        Apply Now <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    </motion.div>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
