@@ -3,6 +3,7 @@ import Header from "@/components/layout/Header";
 import SmoothScroll from "@/components/SmoothScroll";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
+import OffersMarquee from "@/components/home/OffersMarquee";
 import PartnerBankMarquee from "@/components/home/PartnerBankMarquee";
 import ProductSelectorGrid from "@/components/home/ProductSelectorGrid";
 import TrustMonologue from "@/components/home/TrustMonologue";
@@ -31,8 +32,9 @@ const Index = () => {
           <Header />
           <main className="flex-1">
             <HeroSection />
-            <PartnerBankMarquee />
+            <OffersMarquee />
             <ProductSelectorGrid />
+            <PartnerBankMarquee />
             <ProcessSection />
             <TrustMonologue />
             <TestimonialsSlider />
