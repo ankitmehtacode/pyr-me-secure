@@ -4,8 +4,9 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
 import OffersMarquee from "@/components/home/OffersMarquee";
-import PartnerBankMarquee from "@/components/home/PartnerBankMarquee";
 import ProductSelectorGrid from "@/components/home/ProductSelectorGrid";
+import PartnerBankGrid from "@/components/home/PartnerBankGrid";
+import PlanFinancesSection from "@/components/home/PlanFinancesSection";
 import TrustMonologue from "@/components/home/TrustMonologue";
 import ProcessSection from "@/components/home/ProcessSection";
 import TestimonialsSlider from "@/components/home/TestimonialsSlider";
@@ -34,7 +35,8 @@ const Index = () => {
             <HeroSection />
             <OffersMarquee />
             <ProductSelectorGrid />
-            <PartnerBankMarquee />
+            <PartnerBankGrid />
+            <PlanFinancesSection />
             <ProcessSection />
             <TrustMonologue />
             <TestimonialsSlider />
