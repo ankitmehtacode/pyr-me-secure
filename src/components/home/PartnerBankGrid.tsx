@@ -2,18 +2,18 @@ import { Building2, Shield } from "lucide-react";
 import { motion } from "framer-motion";
 
 const banks = [
-  { name: "HDFC Bank", id: "hdfc", color: "from-blue-500/10 to-blue-600/5" },
-  { name: "ICICI Bank", id: "icici", color: "from-orange-500/10 to-orange-600/5" },
-  { name: "State Bank of India", id: "sbi", color: "from-blue-600/10 to-indigo-600/5" },
-  { name: "Axis Bank", id: "axis", color: "from-pink-500/10 to-rose-500/5" },
-  { name: "Kotak Mahindra", id: "kotak", color: "from-red-500/10 to-red-600/5" },
-  { name: "Yes Bank", id: "yes", color: "from-blue-400/10 to-cyan-500/5" },
-  { name: "IndusInd Bank", id: "indusind", color: "from-violet-500/10 to-purple-500/5" },
-  { name: "Bank of Baroda", id: "bob", color: "from-orange-600/10 to-amber-500/5" },
-  { name: "Punjab National Bank", id: "pnb", color: "from-blue-700/10 to-blue-500/5" },
-  { name: "IDFC First Bank", id: "idfc", color: "from-red-400/10 to-rose-400/5" },
-  { name: "Federal Bank", id: "federal", color: "from-yellow-500/10 to-amber-400/5" },
-  { name: "Bajaj Finance", id: "bajaj", color: "from-blue-500/10 to-sky-500/5" },
+  { name: "HDFC Bank", id: "hdfc" },
+  { name: "ICICI Bank", id: "icici" },
+  { name: "State Bank of India", id: "sbi" },
+  { name: "Axis Bank", id: "axis" },
+  { name: "Kotak Mahindra", id: "kotak" },
+  { name: "Yes Bank", id: "yes" },
+  { name: "IndusInd Bank", id: "indusind" },
+  { name: "Bank of Baroda", id: "bob" },
+  { name: "Punjab National Bank", id: "pnb" },
+  { name: "IDFC First Bank", id: "idfc" },
+  { name: "Federal Bank", id: "federal" },
+  { name: "Bajaj Finance", id: "bajaj" },
 ];
 
 const containerVariants = {
@@ -76,13 +76,13 @@ const PartnerBankGrid = () => {
               variants={itemVariants}
               whileHover={{ y: -4, scale: 1.03 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="group relative flex flex-col items-center gap-2.5 p-4 rounded-2xl border border-border/40 bg-card/60 backdrop-blur-sm cursor-default select-none hover:border-primary/20 hover:shadow-elevated transition-shadow duration-300"
+              className="group relative flex flex-col items-center gap-2.5 p-4 rounded-2xl border border-border/40 bg-card/60 backdrop-blur-sm cursor-default select-none grayscale hover:grayscale-0 hover:border-primary/20 hover:shadow-elevated transition-all duration-300"
             >
               {/* Icon placeholder */}
-              <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${bank.color} flex items-center justify-center border border-border/30`}>
-                <Building2 className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors duration-200" />
+              <div className="w-11 h-11 rounded-xl bg-muted/60 flex items-center justify-center border border-border/30 group-hover:bg-primary/10 transition-colors duration-300">
+                <Building2 className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
               </div>
-              <span className="text-xs font-medium text-foreground text-center leading-tight">
+              <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground text-center leading-tight transition-colors duration-300">
                 {bank.name}
               </span>
             </motion.div>
